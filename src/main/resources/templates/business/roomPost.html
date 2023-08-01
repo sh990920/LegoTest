@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script th:inline="javascript">
+        // 컨트롤러에서 모델로 바인딩한 에러 체크값
+        let error = [[${error}]];
+        // 컨트롤러에서 모델로 바인딩한 에러 메세지
+        let errorMessage = [[${errorMessage}]];
+
+        let idx = [[${room.idx}]];
+
+        // 에러 체크값이 true일 경우 에러 알림창 등장
+        if ( error == "true" ) {
+            alert(errorMessage);
+            location.href = "/business/roomPostPage/?idx=" + idx;
+        }
+    </script>
+</head>
+<body>
+    <h1>방 상세 페이지</h1>
+    <div>
+        <input type="button" value="메인으로" onclick="location.href='/business/'">
+    </div>
+    <div>
+        <span th:text="${room.roomName}"></span>
+    </div>
+    <div>
+        <span th:text="${room.price} + 원"></span>
+    </div>
+    <div>
+        <span th:text="${room.minPersonnel}"></span>
+    </div>
+    <div>
+        <span th:text="${room.maxPersonnel}"></span>
+    </div>
+    <div>
+        <span th:text="${room.checkInTime}"></span>
+    </div>
+    <div>
+        <span th:text="${room.checkOutTime}"></span>
+    </div>
+    <div th:each="roomImage : ${roomImageList}">
+        <form method="post" action="/business/roomPostPage/roomImageDelete/">
+            <img th:src="@{/roomImage/} + ${roomImage.image}">
+            <input type="hidden" name="idx" th:value="${roomImage.idx}">
+            <input type="hidden" name="roomIdx" th:value="${roomImage.roomIdx}">
+            <input type="submit" value="사진 삭제">
+        </form>
+    </div>
+    <div>
+        <form method="post" enctype="multipart/form-data" action="/business/roomPostPage/roomImageAdd/">
+            <input type="hidden" th:value="${room.idx}" id="roomIdx" name="roomIdx">
+            <input type="hidden" th:value="${room.businessIdx}" name="businessIdx">
+            <input type="file" id="imageFile"  name="imageFile" onchange="previewImage();">
+            <input type="submit" value="사진 추가">
+        </form>
+    </div>
+</body>
+<script>
+    // 이미지 미리보기
+    function previewImage() {
+        const previewProfileImage = document.getElementById("previewProfileImage");
+        const file = document.getElementById("imageFile").files[0];
+        const reader = new FileReader();
+
+        reader.addEventListener("load", function () {
+            previewProfileImage.src = reader.result;
+        }, false);
+
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
+</html>

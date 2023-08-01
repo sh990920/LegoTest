@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 부트스트랩 api -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js" integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa" crossorigin="anonymous"></script>
+    <!-- 아이콘 api -->
+    <script src="https://kit.fontawesome.com/67d5da7423.js" crossorigin="anonymous"></script>
+    <!-- footer css -->
+    <link href="/css/footer.css" rel="stylesheet">
+</head>
+<body>
+    <header style="background-color: #E24671;">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg bg-body-tertiary">
+                <div class="container-fluid">
+                    <a class="navbar-brand me-4 mb-4 mb-lg-0" href="/">Lego</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <input type="hidden" value="이게 없으면 모양 유지가 안됨">
+                        </ul>
+                        <div class="d-flex nav-item me-5 mb-5 mb-lg-0">
+                            <a class="nav-link" href="/beforeSearchPage/">검색</a>
+                        </div>
+                        <div class="d-flex nav-item me-4 mb-4 mb-lg-0">
+                            <a class="nav-link active" href="/">예약 내역</a>
+                        </div>
+                        <div class="d-flex nav-item me-4 mb-4 mb-lg-0">
+                            <a class="nav-link" href="/myPage/">마이 페이지</a>
+                        </div>
+                        <div class="d-flex nav-item me-4 mb-4 mb-lg-0">
+                            <div class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    더보기
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">공지사항</a></li>
+                                    <li><a class="dropdown-item" href="#">이벤트</a></li>
+                                    <li><a class="dropdown-item" href="#">자주 묻는 질문</a></li>
+                                    <li><a class="dropdown-item" href="#">1:1 문의</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="#">약관 및 정책</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div sec:authorize="isAnonymous()" class="d-flex nav-item me-4 mb-4 mb-lg-0">
+                            <a class="nav-link active" href="/loginPage/">로그인</a>
+                        </div>
+                        <div sec:authorize="isAuthenticated()" class="d-flex nav-item me-4 mb-4 mb-lg-0">
+                            <a class="nav-link active" href="/logout/">로그아웃</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <div style="height: 50px; width: 100%;">
+
+    </div>
+    <div class="container">
+        <div class="row" style="height: 400px; width: 100%;">
+            <div class="col-6" style="height: 100%;">
+                <div class="row" style="width: 100%; height: 10%;">
+
+                </div>
+                <div class="row" style="width: 100%; height: 80%;">
+                    <div class="col-1">
+
+                    </div>
+                    <div class="col-10" style="height: 100%;">
+                        <div id="carouselExample" class="carousel slide" data-bs-ride="true" style="height: 100%; width: 100%;">
+                            <div class="carousel-inner" style="height: 100%; width: 100%;">
+                                <th:block th:each="businessImage : ${businessImageList}">
+                                    <th:block th:if="${businessImageStat.count} == 1">
+                                        <div class="carousel-item active" style="height: 100%; width: 100%;">
+                                            <img th:src="@{/businessImage/} + ${businessImage.image}" class="d-block w-100" alt="..." style="height: 100%; width: 100%;">
+                                        </div>
+                                    </th:block>
+                                    <th:block th:if="${businessImageStat.count} != 1">
+                                        <div class="carousel-item"  style="height: 100%; width: 100%;">
+                                            <img th:src="@{/businessImage/} + ${businessImage.image}" class="d-block w-100" alt="..." style="height: 100%; width: 100%;">
+                                        </div>
+                                    </th:block>
+                                </th:block>
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-1">
+
+                    </div>
+                </div>
+                <div class="row" style="width: 100%; height: 10%;">
+
+                </div>
+            </div>
+            <div class="col-6" style="height: 100%;">
+                <div class="container" style="height: 100%; width: 100%; font-size: 20px;">
+                    <div style="height: 10%;">
+                        <div th:text="${business.placeName}"></div>
+                    </div>
+                    <div style="height: 10%;">
+                        <div th:text="${business.category}"></div>
+                    </div>
+                    <div style="height: 10%;">
+                        <div th:text="${business.placeAddress}"></div>
+                    </div>
+                    <div class="row" style="height: 70%;">
+                        <div class="col-1"></div>
+                        <div class="col-10" id="map" style="border: 1px solid black; border-radius: 5%;"></div>
+                        <div class="col-1"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="height: 50px; width: 100%;">
+
+        </div>
+        <div class="container" style="height: 200px;">
+            <div class="row" style="width: 100%; height: 20%;">
+                <div class="col-1">
+
+                </div>
+                <div class="col-11 align-self-center" style="font-size: 20px;">
+                    시설 및 서비스
+                </div>
+            </div>
+            <div class="row" style="height: 80%;">
+                <div class="col" style="height: 100%;">
+                    <div th:if="${business.parkingOption} == 1" style="height: 100%; width: 100%;">
+                        <div class="row align-items-center" style="height: 70%; text-align: center;">
+                            <i class="fa-solid fa-vihara fa-2xl" style="color: black;"></i>
+                        </div>
+                        <div class="row align-items-center" style="height: 30%;">
+                            <div class="col-12" style="text-align: center;">
+                                주차 가능
+                            </div>
+                        </div>
+                    </div>
+                    <div th:if="${business.parkingOption} != 1" style="height: 100%; width: 100%;">
+                        <div class="row align-items-center" style="height: 70%; text-align: center;">
+                            <i class="fa-solid fa-vihara fa-2xl" style="color: black;"></i>
+                        </div>
+                        <div class="row align-items-center" style="height: 30%;">
+                            <div class="col-12" style="text-align: center;">
+                                주차 불가능
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col" style="height: 100%;">
+                    <div th:if="${business.smokingOption} == 1" style="height: 100%; width: 100%;">
+                        <div class="row align-items-center" style="height: 70%; text-align: center;">
+                            <i class="fa-solid fa-vihara fa-2xl" style="color: black;"></i>
+                        </div>
+                        <div class="row align-items-center" style="height: 30%;">
+                            <div class="col-12" style="text-align: center;">
+                                흡연 가능
+                            </div>
+                        </div>
+                    </div>
+                    <div th:if="${business.smokingOption} != 1" style="height: 100%; width: 100%;">
+                        <div class="row align-items-center" style="height: 70%; text-align: center;">
+                            <i class="fa-solid fa-vihara fa-2xl" style="color: black;"></i>
+                        </div>
+                        <div class="row align-items-center" style="height: 30%;">
+                            <div class="col-12" style="text-align: center;">
+                                흡연 불가능
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col" style="height: 100%;">
+                    <div th:if="${business.wifiOption} == 1" style="height: 100%; width: 100%;">
+                        <div class="row align-items-center" style="height: 70%; text-align: center;">
+                            <i class="fa-solid fa-vihara fa-2xl" style="color: black;"></i>
+                        </div>
+                        <div class="row align-items-center" style="height: 30%;">
+                            <div class="col-12" style="text-align: center;">
+                                와이파이 있음
+                            </div>
+                        </div>
+                    </div>
+                    <div th:if="${business.wifiOption} != 1" style="height: 100%; width: 100%;">
+                        <div class="row align-items-center" style="height: 70%; text-align: center;">
+                            <i class="fa-solid fa-vihara fa-2xl" style="color: black;"></i>
+                        </div>
+                        <div class="row align-items-center" style="height: 30%;">
+                            <div class="col-12" style="text-align: center;">
+                                와이파이 없음
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col" style="height: 100%;">
+                    <div th:if="${business.ottOption} == 0" style="height: 100%; width: 100%;">
+                        <div class="row align-items-center" style="height: 70%; text-align: center;">
+                            <i class="fa-solid fa-vihara fa-2xl" style="color: black;"></i>
+                        </div>
+                        <div class="row align-items-center" style="height: 30%;">
+                            <div class="col-12" style="text-align: center;">
+                                OTT 옵션 없음
+                            </div>
+                        </div>
+                    </div>
+                    <div th:if="${business.ottOption} == 1" style="height: 100%; width: 100%;">
+                        <div class="row align-items-center" style="height: 70%; text-align: center;">
+                            <i class="fa-solid fa-vihara fa-2xl" style="color: black;"></i>
+                        </div>
+                        <div class="row align-items-center" style="height: 30%;">
+                            <div class="col-12" style="text-align: center;">
+                                NetFlix(넷플릭스)
+                            </div>
+                        </div>
+                    </div>
+                    <div th:if="${business.ottOption} == 2" style="height: 100%; width: 100%;">
+                        <div class="row align-items-center" style="height: 70%; text-align: center;">
+                            <i class="fa-solid fa-vihara fa-2xl" style="color: black;"></i>
+                        </div>
+                        <div class="row align-items-center" style="height: 30%;">
+                            <div class="col-12" style="text-align: center;">
+                                Wavve(웨이브)
+                            </div>
+                        </div>
+                    </div>
+                    <div th:if="${business.ottOption} == 3" style="height: 100%; width: 100%;">
+                        <div class="row align-items-center" style="height: 70%; text-align: center;">
+                            <i class="fa-solid fa-vihara fa-2xl" style="color: black;"></i>
+                        </div>
+                        <div class="row align-items-center" style="height: 30%;">
+                            <div class="col-12" style="text-align: center;">
+                                TVing(티빙)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="height: 50px; width: 100%;">
+
+        </div>
+        <div style="height: 50px;">
+            객실 선택
+        </div>
+        <div th:each="room : ${roomList}">
+            <div style="height: 25px; width: 100%;">
+
+            </div>
+            <div class="row" style="height: 400px; width: 100%;">
+                <div class="col-6" style="height: 100%;">
+                    <div class="row" style="width: 100%; height: 10%;">
+
+                    </div>
+                    <div class="row" style="width: 100%; height: 80%;">
+                        <div class="col-1">
+
+                        </div>
+                        <div class="col-10" style="height: 100%;">
+                            <div th:id="'carouselRoom' + ${room.idx}" class="carousel slide" data-bs-ride="true" style="height: 100%; width: 100%;">
+                                <div class="carousel-inner" style="height: 100%; width: 100%;">
+                                    <th:block th:each="roomImage : ${roomImageList[roomStat.index]}">
+                                        <th:block th:if="${roomImageStat.count} == 1">
+                                            <div class="carousel-item active" style="height: 100%; width: 100%;">
+                                                <img th:src="@{/roomImage/} + ${roomImage.image}" class="d-block w-100" alt="..." style="height: 100%; width: 100%;">
+                                            </div>
+                                        </th:block>
+                                        <th:block th:if="${roomImageStat.count} != 1">
+                                            <div class="carousel-item" style="height: 100%; width: 100%;">
+                                                <img th:src="@{/roomImage/} + ${roomImage.image}" class="d-block w-100" alt="..." style="height: 100%; width: 100%;">
+                                            </div>
+                                        </th:block>
+                                    </th:block>
+                                </div>
+                                <button class="carousel-control-prev" type="button" th:data-bs-target="'#carouselRoom' + ${room.idx}" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" th:data-bs-target="'#carouselRoom' + ${room.idx}" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-1">
+
+                        </div>
+                    </div>
+                    <div class="row" style="width: 100%; height: 10%;">
+
+                    </div>
+                </div>
+                <div class="col-6" style="height: 100%;">
+                    <div class="row" style="width: 100%; height: 10%;">
+
+                    </div>
+                    <div class="row" style="width: 100%; height: 80%;">
+                        <div class="col-1">
+
+                        </div>
+                        <div class="col-10" style="height: 100%; font-size: 20px;">
+                            <form method="get" action="/placePost/roomPost/" style="height: 100%; width: 100%;">
+                                <input type="hidden" th:value="${room.idx}" name="idx">
+                                <div style="height: 20%; width: 100%;">
+                                    <div th:text="${room.roomName}">
+                                        객실 이름
+                                    </div>
+                                </div>
+                                <div style="height: 20%; width: 100%;">
+                                    <div th:text="${room.price}">
+                                        가격
+                                    </div>
+                                </div>
+                                <div style="height: 20%; width: 100%;">
+                                    <div style="height: 50%; width: 100%;">
+                                        <div>인원 수</div>
+                                    </div>
+                                    <div class="row" style="height: 50%; width: 100%;">
+                                        <div class="col-6">
+                                            <span th:text="${room.minPersonnel}"></span>
+                                        </div>
+                                        <div class="col-6">
+                                            <span th:text="${room.maxPersonnel}"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="height: 20%; width: 100%;">
+                                    <div style="height: 50%; width: 100%;">
+                                        <div>체크인 시간</div>
+                                    </div>
+                                    <div class="row" style="height: 50%; width: 100%;">
+                                        <div class="col-6">
+                                            <span th:text="${room.checkInTime}"></span>
+                                        </div>
+                                        <div class="col-6">
+                                            <span th:text="${room.checkOutTime}"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="height: 20%; width: 100%;">
+                                    <input class="btn btn-primary" type="submit" value="상세보기">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-1">
+
+                        </div>
+                    </div>
+                    <div class="row" style="width: 100%; height: 10%;">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="height: 35px; width: 100%;">
+
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer__addr">
+            <h1 class="footer__logo">Lego</h1>
+                
+            <h2>Contact</h2>
+            
+            <address>
+                5534 Somewhere In. The World 22193-10212 - 세상은 하나 위아더 월드<br>
+                <a class="footer__btn" href="mailto:example@gmail.com">Email Us</a>
+            </address>
+        </div>
+        
+        <ul class="footer__nav">
+            <li class="nav__item">
+                <h2 class="nav__title">Media</h2>
+            
+                <ul class="nav__ul">
+                    <li>
+                        <a href="#">회사소개</a>
+                    </li>
+            
+                    <li>
+                        <a href="#">이용악관</a>
+                    </li>
+                        
+                    <li>
+                        <a href="#">개인정보처리방침</a>
+                    </li>
+                </ul>
+            </li>
+            
+            <li class="nav__item nav__item--extra">
+                <h2 class="nav__title">Technology</h2>
+                
+                <ul class="nav__ul nav__ul--extra">
+                    <li>
+                        <a href="#">고객센터</a>
+                    </li>
+                    
+                    <li>
+                        <a href="#">02-0000-0000</a>
+                    </li>
+                    
+                    <li>
+                        <a href="#">없는 번호니깐 전화하지 마세요!</a>
+                    </li>
+                    
+                    <li>
+                        <a href="#">구매는 본인에게 책임이 있으니 어쩌구 저쩌구...</a>
+                    </li>
+                    
+                    <li>
+                        <a href="#">이젠 쓸게 없음...</a>
+                    </li>
+                    
+                    <li>
+                        <a href="#">Css 싫어</a>
+                    </li>
+                </ul>
+            </li>
+            
+            <li class="nav__item">
+                <h2 class="nav__title">제작자</h2>
+                <ul class="nav__ul">
+                    <li>
+                        <a href="https://github.com/sh990920">깃허브</a>
+                    </li>
+                    
+                    <li>
+                        <a href="https://shpark0920.tistory.com/">블로그</a>
+                    </li>
+                    
+                    <li>
+                        <a href="#">아직 없음</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <div class="legal">
+            <p>&copy; 2023년 제작중. 너무 어려워요.</p>
+            <div class="legal__links">
+                <span>Made with <span class="heart">♥</span>승환파크</span>
+            </div>
+        </div>
+    </footer>
+
+</body>
+<!-- 카카오맵 api -->
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=57327f1e4db78ff9380934b5d4ecfedd&libraries=services"></script>
+<script src="/js/cacaoMap.js"></script>
+</html>

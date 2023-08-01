@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>관리자 메인 페이지</h1>
+    <div>
+        <div th:text="${id}"></div>
+    </div>
+    <div sec:authorize="isAuthenticated()">
+        <input type="button" value="로그아웃" onclick="location.href='/logout/'">
+    </div>
+</body>
+</html>

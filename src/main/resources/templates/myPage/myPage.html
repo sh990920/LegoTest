@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script th:inline="javascript">
+        // 컨트롤러에서 모델로 바인딩한 에러 체크값
+        let error = [[${error}]];
+        // 컨트롤러에서 모델로 바인딩한 에러 메세지
+        let errorMessage = [[${errorMessage}]];
+
+        // 에러 체크값이 true일 경우 에러 알림창 등장
+        if ( error == "true" ) {
+            alert(errorMessage);
+            location.href = "/myPage/";
+        }
+    </script>
+</head>
+<body>
+    <h1>마이페이지</h1>
+    <div>
+        <span>유저 id : </span>
+        <span th:text="${member.id}"></span>
+    </div>
+    <div>
+        <span>유저 닉네임 : </span>
+        <span th:text="${member.nickname}"></span>
+    </div>
+    <div>
+        <span>유저 전화번호 : </span>
+        <span th:text="${member.phone}"></span>
+    </div>
+    <div>
+        <span>유저 프로필 사진 : </span>
+        <span th:text="${member.profileImage}"></span>
+    </div>
+    <div>
+        <form method="post" enctype="multipart/form-data" action="/myPage/profileImageUpdate/">
+            <span>이미지 변경</span>
+            <div th:if="${member.profileImage != ''}">
+                <img id="previewProfileImage" class="profileImgEdit" th:src="@{/profileImage/} + ${member.profileImage}">
+            </div>
+            <div th:if="${member.profileImage == ''}">
+                <img class="profileImgEdit" src="">
+            </div>
+            <input id="profileImage" name="profileImage" type="hidden" th:value="${member.profileImage}">
+            <input type="submit" value="업데이트">
+            <input type="file" id="imageFile"  name="imageFile" onchange="previewImage();">
+        </form>
+    </div>
+</body>
+<script>
+    function previewImage() {
+        const previewProfileImage = document.getElementById("previewProfileImage");
+        const file = document.getElementById("imageFile").files[0];
+        const reader = new FileReader();
+
+        reader.addEventListener("load", function () {
+            previewProfileImage.src = reader.result;
+        }, false);
+
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
+</html>

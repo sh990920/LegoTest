@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>방 등록 페이지</h1>
+    <input type="hidden" th:value="${businessIdx}" id="businessIdx">
+    <div>
+        <span>방 이름</span>
+        <input type="text" id="roomName" name="roomName">
+    </div>
+    <div>
+        <span>방 가격</span>
+        <input type="text" id="price" name="price">
+    </div>
+    <div>
+        <span>최소 인원수</span>
+        <input type="number" id="minPersonnel" name="minPersonnel" value="2">
+    </div>
+    <div>
+        <span>최대 인원수</span>
+        <input type="number" id="maxPersonnel" name="maxPersonnel">
+    </div>
+    <div>
+        <span>체크인 시간</span>
+        <input type="time" id="checkInTime" name="checkInTime">
+    </div>
+    <div>
+        <span>체크아웃 시간</span>
+        <input type="time" id="checkOutTime" name="checkOutTime">
+    </div>
+    <input type="button" value="방 추가" onclick="roomAdd();">
+</body>
+<script src="/js/httpRequest.js"></script>
+<script>
+    function roomAdd(){
+        let roomName = document.getElementById("roomName").value;
+        let price = document.getElementById("price").value;
+        let minPersonnel = document.getElementById("minPersonnel").value;
+        let maxPersonnel = document.getElementById("maxPersonnel").value;
+        let checkInTime = document.getElementById("checkInTime").value;
+        let checkOutTime = document.getElementById("checkOutTime").value;
+        let businessIdx = document.getElementById("businessIdx").value;
+        if(roomName == ''){
+            alert("방 이름을 작성해주세요");
+            return;
+        }
+        if(price == ''){
+            alert("가격을 설정해주세요");
+            return;
+        }
+        if(minPersonnel < '1'){
+            alert("최소 1명 이상은 숙소에 들어갈 수 있어야 합니다.");
+            return;
+        }
+        if(maxPersonnel == null){
+            alert("최대 인원을 설정해주세요");
+            return;
+        }
+        if(checkInTime == null){
+            alert("체크인 시간을 지정해주세요");
+            return;
+        }
+        if(checkOutTime == null){
+            alert("체크아웃 시간을 지정해주세요");
+            return;
+        }
+        let url = "/business/roomAddPage/roomAdd/";
+        let param = "roomName=" + roomName +
+                    "&businessIdx=" + businessIdx +
+                    "&price=" + price +
+                    "&minPersonnel=" + minPersonnel +
+                    "&maxPersonnel=" + maxPersonnel +
+                    "&checkInTime=" + checkInTime +
+                    "&checkOutTime=" + checkOutTime;
+        sendRequest(url, param, resultRoomAdd, "GET");
+    }
+    function resultRoomAdd(){
+        if ( xhr.readyState == 4 && xhr.status == 200 ) {
+            let data = xhr.responseText;
+
+            if (data == "no") {
+                alert("방 생성 실패");
+            } else {
+                alert("방 생성 성공");
+                location.href = "/business/";
+            }
+        }
+    }
+</script>
+</html>

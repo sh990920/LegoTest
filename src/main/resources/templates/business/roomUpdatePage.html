@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>방 수정 페이지</h1>
+    <input type="hidden" th:value="${room.businessIdx}" id="businessIdx">
+    <input type="hidden" th:value="${room.idx}" id="idx">
+    <div>
+        <span>방 이름</span>
+        <input type="text" id="roomName" name="roomName" th:value="${room.roomName}">
+    </div>
+    <div>
+        <span>방 가격</span>
+        <input type="text" id="price" name="price" th:value="${room.price}">
+    </div>
+    <div>
+        <span>최소 인원수</span>
+        <input type="number" id="minPersonnel" name="minPersonnel" th:value="${room.minPersonnel}">
+    </div>
+    <div>
+        <span>최대 인원수</span>
+        <input type="number" id="maxPersonnel" name="maxPersonnel" th:value="${room.maxPersonnel}">
+    </div>
+    <div>
+        <span>체크인 시간</span>
+        <input type="time" id="checkInTime" name="checkInTime" th:value="${room.checkInTime}">
+    </div>
+    <div>
+        <span>체크아웃 시간</span>
+        <input type="time" id="checkOutTime" name="checkOutTime" th:value="${room.checkOutTime}">
+    </div>
+    <input type="button" value="방 추가" onclick="roomUpdate();">
+</body>
+<script src="/js/httpRequest.js"></script>
+<script>
+    function roomUpdate(){
+        let idx = document.getElementById("idx").value;
+        let roomName = document.getElementById("roomName").value;
+        let price = document.getElementById("price").value;
+        let minPersonnel = document.getElementById("minPersonnel").value;
+        let maxPersonnel = document.getElementById("maxPersonnel").value;
+        let checkInTime = document.getElementById("checkInTime").value;
+        let checkOutTime = document.getElementById("checkOutTime").value;
+        let businessIdx = document.getElementById("businessIdx").value;
+        if(roomName == ''){
+            alert("방 이름을 작성해주세요");
+            return;
+        }
+        if(price == ''){
+            alert("가격을 설정해주세요");
+            return;
+        }
+        if(minPersonnel < '1'){
+            alert("최소 1명 이상은 숙소에 들어갈 수 있어야 합니다.");
+            return;
+        }
+        if(maxPersonnel == null){
+            alert("최대 인원을 설정해주세요");
+            return;
+        }
+        if(checkInTime == null){
+            alert("체크인 시간을 지정해주세요");
+            return;
+        }
+        if(checkOutTime == null){
+            alert("체크아웃 시간을 지정해주세요");
+            return;
+        }
+        let url = "/business/roomUpdatePage/roomUpdate/";
+        let param = "idx=" + idx +
+                    "&roomName=" + roomName +
+                    "&businessIdx=" + businessIdx +
+                    "&price=" + price +
+                    "&minPersonnel=" + minPersonnel +
+                    "&maxPersonnel=" + maxPersonnel +
+                    "&checkInTime=" + checkInTime +
+                    "&checkOutTime=" + checkOutTime;
+        sendRequest(url, param, resultRoomUpdate, "GET");
+    }
+    function resultRoomUpdate(){
+        if ( xhr.readyState == 4 && xhr.status == 200 ) {
+            let data = xhr.responseText;
+
+            if (data == "no") {
+                alert("방 업데이트 실패");
+            } else {
+                alert("방 업데이트 성공");
+                location.href = "/business/";
+            }
+        }
+    }
+</script>
+</html>

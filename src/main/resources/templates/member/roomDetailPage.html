@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>방 상세보기 페이지</h1>
+    <input  type="button" value="메인으로" onclick="location.href='/'">
+    <div>
+        <div th:text="${room.roomName}"></div>
+    </div>
+    <div>
+        <span id="defaultPrice" th:text="${room.price}"></span> 원
+    </div>
+    <div>
+        <div>
+            <span>최소 인원</span>
+            <span th:text="${room.minPersonnel}" id="minPersonnel"></span>
+        </div>
+        <div>
+            <span>최대 인원</span>
+            <span th:text="${room.maxPersonnel}" id="maxPersonnel"></span>
+        </div>
+    </div>
+    <div>
+        <div>
+            <span>체크인 시간 :</span>
+            <span th:text="${room.checkInTime}"></span>
+        </div>
+        <div>
+            <span>체크아웃 시간</span>
+            <span th:text="${room.checkOutTime}"></span>
+        </div>
+    </div>
+    <div>
+        <form method="post" action="/pay/">
+            <input type="hidden" name="roomIdx" th:value="${room.idx}">
+            <input type="hidden" name="businessIdx" th:value="${room.businessIdx}">
+            <input type="hidden" name="memberIdx" th:value="${member.idx}">
+            <div>
+                <span>시작 날짜</span>
+                <input type="date" id="checkInDate" name="checkInDate" onchange="resultPrice()">
+            </div>
+            <div>
+                <span>끝 날짜</span>
+                <input type="date" id="checkOutDate" name="checkOutDate" onchange="resultPrice()">
+            </div>
+            <div>
+                <span>인원 수</span>
+                <input type="number" name="personnel" th:value="${room.minPersonnel}" id="personnel" onchange="personnelCheck()">
+            </div>
+            <div>
+                <span>가격</span>
+                <input type="text" id="price" name="price" th:value="${room.price}" readonly>
+            </div>
+            <div>
+                <input type="button" value="예약 하기" onclick="payPage(this.form);">
+            </div>
+        </form>
+    </div>
+    <div th:each="roomImage : ${roomImageList}">
+        <div th:if="${roomImage.roomIdx} == ${room.idx}">
+            <img th:src="@{/roomImage/} + ${roomImage.image}">
+        </div>
+    </div>
+</body>
+<script th:inline="javascript">
+    const defaultPrice = document.getElementById("defaultPrice").innerText;
+    let dateCheck = false;
+    function resultPrice(){
+        let checkIn = document.getElementById("checkInDate");
+        let checkOut = document.getElementById("checkOutDate");
+        let price = document.getElementById("price");
+        let checkInDate = new Date(checkIn.value);
+        let checkOutDate = new Date(checkOut.value);
+
+        let bookingArray = new Array();
+        let booking = new Object();
+        let bookingCheckOutDate = null;
+        let bookingCheckInDate = null;
+        /*[# th:each="booking : ${bookingList}"]*/
+        booking.checkInDate = /*[[${booking.checkInDate}]]*/;
+        booking.checkOutDate = /*[[${booking.checkOutDate}]]*/;
+        bookingCheckInDate = new Date(booking.checkInDate);
+        bookingCheckOutDate = new Date(booking.checkOutDate);
+        if(checkInDate >= bookingCheckInDate && checkInDate <= bookingCheckOutDate){
+            alert("체크인 날짜는 이미 예약이 완료된 숙소입니다.\n다른날을 선택해주세요.");
+            checkIn.value = new Date(checkInDate.setDate(checkInDate.getDate()));
+            dateCheck = false;
+            return;
+        }
+        if(checkOutDate >= bookingCheckInDate && checkOutDate <= bookingCheckOutDate){
+            alert("체크아웃 날짜는 이미 예약이 완료된 숙소입니다.\n다른날을 선택해주세요.");
+            checkOut.value = new Date(checkInDate.setDate(checkInDate.getDate()));
+            dateCheck = false;
+            return;
+        }
+        bookingArray.push(booking);
+        /*[/]*/
+
+        if(checkInDate > checkOutDate){
+            alert("체크아웃 날짜는 체크인 날짜보다 빠를 수 없습니다.\n체크이웃 날짜를 다시 입력하세요.");
+            // 왜 오늘 날짜가 안들어가고 초기화가 되는지 모르겠음 근데 오히려 좋아
+            checkOut.value = new Date(checkInDate.setDate(checkInDate.getDate()));
+            dateCheck = false;
+            return;
+        }
+        let diffDate = checkInDate.getTime() - checkOutDate.getTime();
+        let days = Math.abs(diffDate / (1000 * 60 * 60 * 24));
+        let resultPrice = Number(defaultPrice) * days;
+        price.value = resultPrice;
+        dateCheck = true;
+    }
+</script>
+<script>
+    let checkInDate = document.getElementById("checkInDate");
+    checkInDate.valueAsDate = new Date();
+</script>
+<script>
+    let checkPersonnel = true;
+    function personnelCheck(){
+        let minPersonnel = document.getElementById("minPersonnel").innerText;
+        let maxPersonnel = document.getElementById("maxPersonnel").innerText;
+        let personnel = document.getElementById("personnel");
+        if(personnel.value > Number(maxPersonnel)){
+            alert("인원수가 최대 인원수보다 많습니다.");
+            personnel.value = [[${room.minPersonnel}]];
+            return;
+        }
+        if(personnel.value < Number(minPersonnel)){
+            alert("인원수가 최소 인원수보다 적습니다.");
+            personnel.value = [[${room.minPersonnel}]];
+            return;
+        }
+        checkPersonnel = true;
+
+    }
+</script>
+<script>
+    function payPage(f){
+        if(checkPersonnel != true){
+            alert("인원수를 다시 입력해주세요.");
+            return;
+        }
+        if(dateCheck != true){
+            alert("날짜를 다시 확인해주세요.");
+            return;
+        }
+        f.submit();
+    }
+</script>
+</html>

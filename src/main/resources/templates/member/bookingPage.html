@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
+    <script>
+        // 현재시간으로 id설정
+        // 현재 시간 가져오기
+        let time = new Date().toTimeString().split(' ')[0];
+        // 타임존 설정
+        const TIME_ZONE = 3240 * 10000;
+        // 오늘 날짜 시간 가져오기
+        let today = new Date(+new Date() + TIME_ZONE).toISOString().split('T')[0];
+        // 클라이언트 id 설정
+        let paymentId = "paymentId-" + today + "-" + time;
+        function requestPayment() {
+            let buyerName = document.getElementById("visitorName").value;
+            let buyerTel = document.getElementById("visitorPhone").value;
+            if(buyerName == ""){
+                alert("이용자 이름을 작성해주세요.");
+                return;
+            }
+            if(buyerTel == ""){
+                alert("이용자 전화번호를 작성해주세요.");
+                return;
+            }
+            let pg = document.getElementById("pg");
+            let value = (pg.options[pg.selectedIndex].value);
+            if(value == "----선택----"){
+                alert("결제수단을 선택해주세요.");
+                return;
+            }
+            let payMethod = "CARD";
+            // 카카오페이
+            if(value == "channel-key-4d5d39a6-bbc9-4087-96b8-db912de32d81"){
+                payMethod = "EASY_PAY";
+            }
+            // 토스페이
+            if(value == "channel-key-bcae8eee-454b-4104-afe6-9c356bf3c575"){
+                //payMethod = "EASY_PAY";
+            }
+            let request = PortOne.requestPayment({
+                // 가맹점 storeId로 변경해주세요.
+                storeId: 'store-9969082b-4275-4cb8-b6df-f11400902f39',
+                // 클라이언트 id
+                paymentId: paymentId,
+                // 주문 명
+                orderName: '[[${room.roomName}]]',
+                // 결제 금액
+                totalAmount: [[${booking.price}]],
+                // 결제 통화
+                currency: 'CURRENCY_KRW',
+                // pg사 코드
+                //pgProvider: value,
+                channelKey: value,
+                // 결제 수단
+                payMethod: payMethod,
+                // 유저 이름
+                customer: {
+                    fullName: buyerName,
+                    customerId: '[[${member.id}]]',
+                    phoneNumber: buyerTel
+                },
+                phoneNumber: '[[${member.phone}]]',
+            }).then(function(response){
+                if(response.code != null){
+                    alert(response.message);
+                    return;
+                }else{
+                    let buyerName = document.getElementById("visitorName").value;
+                    let buyerTel = document.getElementById("visitorPhone").value;
+                    let pg = document.getElementById("pg");
+                    let value = (pg.options[pg.selectedIndex].value);
+                    let pgProvider = "";
+                    let payMethod = "CARD";
+                    // 카카오페이
+                    if(value == "channel-key-4d5d39a6-bbc9-4087-96b8-db912de32d81"){
+                        payMethod = "EASY_PAY";
+                        pgProvider = "CACAO_PAY";
+                    }
+                    // 토스페이
+                    if(value == "channel-key-c923485b-39d5-4d18-96c8-18393b93b7b0"){
+                        //payMethod = "EASY_PAY";
+                        pgProvider = "TOSS_PAY";
+                    }
+                    // KS_NET
+                    if(value == "channel-key-5e0753fa-5147-4bf2-b1c2-035acdfd5b74"){
+                        pgProvider = "KS_NET";
+                    }
+                    var url = "/pay/success/";
+	                var param = "memberIdx=" + [[${booking.memberIdx}]] +
+	                            "&businessIdx=" + [[${booking.businessIdx}]] +
+	                            "&roomIdx=" + [[${booking.roomIdx}]] +
+	                            "&paymentId=" + paymentId +
+	                            "&pgProvider=" + pgProvider +
+	                            "&payMethod=" + payMethod +
+	                            "&checkInDate=" + '[[${booking.checkInDate}]]' +
+	                            "&checkOutDate=" + '[[${booking.checkOutDate}]]' +
+	                            "&price= " + [[${booking.price}]] +
+	                            "&buyerName=" + buyerName +
+	                            "&buyerTel=" + buyerTel +
+	                            "&personnel=" + '[[${booking.personnel}]]';
+	                sendRequest(url, param, res, "post");
+                }
+            });
+        }
+        function res() {
+        	if (xhr.readyState == 4 && xhr.status == 200) {
+		        var data = xhr.responseText;
+		        if (data == "no") {
+		            alert("결제실패는 아니고 값이 안들어감 ㅋ");
+		            //값이 잘 들어오니깐 비교해서 값 정리하고 들어왔으면 결제 완료로 넘어가게
+		            //그다음 restAPI써서 키값 밸류값 뭐시기 하고
+		            //그다음 결제완료됬는지 진짜 마지막 확인까지만 하면 끝
+		            //인데 그건 나중에 일단은 결제 완료되면 db에 저장
+			        return;
+		        } else {
+                    //가맹점 서버 결제 API 성공시 로직
+                    alert("결제완료");
+                    //여기서 받은 정보들을 가지고 다시 컨트롤러로 돌아가서 db에 저장
+                    //이후 다시 결제 목록으로 페이지를 옮겨준다
+                    location.href="/";
+		        }
+	        }
+        }
+    </script>
+    <script src="/js/httpRequest.js"></script>
+</head>
+<body>
+    <h1>결제 페이지</h1>
+    <div>
+        <div>
+            <div>숙소 이름</div>
+            <div th:text="${business.placeName}" readonly></div>
+        </div>
+        <div>
+            <div>방 이름</div>
+            <div th:text="${room.roomName}" readonly></div>
+        </div>
+        <div>
+            <span>체크인</span>
+            <input type="date" th:value="${booking.checkInDate}" readonly>
+        </div>
+        <div>
+            <span>체크아웃</span>
+            <input type="date" th:value="${booking.checkOutDate}" readonly>
+        </div>
+    </div>
+    <div>
+        <span>가격</span>
+        <div th:text="${booking.price}" readonly></div>
+    </div>
+    <div>
+        <div>예약자 정보</div>
+        <div>
+            <span>이름</span>
+            <span th:text="${member.name}" id="memberName" readonly></span>
+        </div>
+        <div>
+            <span>전화번호</span>
+            <span th:text="${member.phone}" id="memberPhone" readonly></span>
+        </div>
+    </div>
+    <div>
+        <div>이용자 정보</div>
+        <div>
+            <input type="checkbox" id="check" onclick="memberSameVisitor();">
+            <span>예약자 정보와 동일</span>
+        </div>
+        <div>
+            <span>이름</span>
+            <input type="text" id="visitorName" placeholder="이름을 입력하세요.">
+        </div>
+        <div>
+            <span>전화번호</span>
+            <input type="text" id="visitorPhone" placeholder="전화번호를 입력하세요.">
+        </div>
+        <div>
+            <span>인원 수</span>
+            <span th:text="${booking.personnel}" readonly></span>
+        </div>
+    </div>
+    <div>
+        <div>결제 금액</div>
+        <div>총 결제금액</div>
+        <div th:text="${booking.price}" readonly></div>
+    </div>
+    <div>
+        <div>결제 수단</div>
+        <select id="pg">
+            <option>----선택----</option>
+            <option value="channel-key-4d5d39a6-bbc9-4087-96b8-db912de32d81">카카오페이</option>
+            <option value="channel-key-c923485b-39d5-4d18-96c8-18393b93b7b0">토스페이먼트</option>
+            <option value="channel-key-5e0753fa-5147-4bf2-b1c2-035acdfd5b74">KSNET</option>
+        </select>
+    </div>
+    <div>
+        <input type="button" value="결제하기" onclick="requestPayment()">
+    </div>
+</body>
+<script>
+    function memberSameVisitor(){
+        let check = document.getElementById("check");
+        let memberName = document.getElementById("memberName");
+        let memberPhone = document.getElementById("memberPhone");
+        let visitorName = document.getElementById("visitorName");
+        let visitorPhone = document.getElementById("visitorPhone");
+        if(check.checked){
+            visitorName.value = memberName.innerText;
+            visitorName.readOnly = true;
+            visitorPhone.value = memberPhone.innerText;
+            visitorPhone.readOnly = true;
+        }else{
+            visitorName.value = "";
+            visitorName.readOnly = false;
+            visitorPhone.value = "";
+            visitorPhone.readOnly = false;
+        }
+    }
+</script>
+</html>

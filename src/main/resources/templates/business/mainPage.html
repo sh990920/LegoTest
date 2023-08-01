@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script th:inline="javascript">
+        // 컨트롤러에서 모델로 바인딩한 에러 체크값
+        let error = [[${error}]];
+        // 컨트롤러에서 모델로 바인딩한 에러 메세지
+        let errorMessage = [[${errorMessage}]];
+
+        // 에러 체크값이 true일 경우 에러 알림창 등장
+        if ( error == "true" ) {
+            alert(errorMessage);
+            location.href = "/business/";
+        }
+    </script>
+</head>
+<body>
+    <h1>사업자 메인 페이지</h1>
+    <div>
+        <div th:text="${id}"></div>
+    </div>
+    <div>
+        <div th:text="${business.placeName}"></div>
+    </div>
+    <div>
+        <div>
+            <div th:each="businessImage : ${businessImageList}">
+                <form method="post" action="/business/imageDelete/">
+                    <img th:src="@{/businessImage/} + ${businessImage.image}">
+                    <input type="hidden" name="idx" th:value="${businessImage.idx}">
+                    <input type="submit" value="사진 삭제">
+                </form>
+            </div>
+        </div>
+        <div>
+            <form method="post" enctype="multipart/form-data" action="/business/imageAdd/">
+                <input type="hidden" th:value="${business.idx}" id="businessIdx" name="businessIdx">
+                <input type="file" id="imageFile"  name="imageFile" onchange="previewImage();">
+                <input type="submit" value="사진 추가">
+            </form>
+        </div>
+    </div>
+    <div>
+        <input type="button" value="방 추가" onclick="location.href='/business/roomAddPage/'">
+    </div>
+    <div th:each="room : ${roomList}" style="border:1px solid black;">
+        <form action="/business/roomUpdatePage/" method="GET">
+            <div th:text="${room.roomName}"></div>
+            <div th:text="${room.price}"></div>
+            <input type="hidden" th:value="${room.idx}" id="idx" name="idx">
+            <div>
+                <input type="submit" value="방 수정">
+            </div>
+            <div>
+                <input type="button" value="상세보기" th:onclick="roomPost([[${room.idx}]])">
+            </div>
+            <div>
+                <input type="button" value="방 삭제" onclick="roomDelete();">
+            </div>
+        </form>
+    </div>
+    <div sec:authorize="isAuthenticated()">
+        <input type="button" value="로그아웃" onclick="location.href='/logout/'">
+    </div>
+</body>
+<script src="/js/httpRequest.js"></script>
+<script>
+    // 방 삭제하기
+    function roomDelete(){
+        let idx = document.getElementById("idx").value;
+        let url = "/business/roomDelete/"
+        let param = "idx=" + idx;
+        sendRequest(url, param, resultDelete, "GET");
+    }
+    function resultDelete(){
+        if ( xhr.readyState == 4 && xhr.status == 200 ) {
+            let data = xhr.responseText;
+
+            if (data == "no") {
+                alert("방 삭제 실패");
+            } else {
+                alert("방 삭제 성공");
+                location.reload();
+            }
+        }
+    }
+</script>
+<script>
+    // 이미지 미리보기
+    function previewImage() {
+        const previewProfileImage = document.getElementById("previewProfileImage");
+        const file = document.getElementById("imageFile").files[0];
+        const reader = new FileReader();
+
+        reader.addEventListener("load", function () {
+            previewProfileImage.src = reader.result;
+        }, false);
+
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
+<script>
+    // 방 상세보기 페이지로 이동
+    function roomPost(idx){
+        let roomIdx = idx;
+        location.href="/business/roomPostPage/?idx=" + idx;
+    }
+</script>
+</html>

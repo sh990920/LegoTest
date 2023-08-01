@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 부트스트랩 api -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js" integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa" crossorigin="anonymous"></script>
+    <!-- 카카오 주소입력 api -->
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script src="/js/postCode.js"></script>
+    <!-- 포트원 본인인증 api -->
+    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="/js/certifications.js"></script>
+    <!-- Ajax 사용 js -->
+    <script src="/js/httpRequest.js"></script>
+    <!-- 아이디 중복 비교 js -->
+    <script src="/js/idCheck.js"></script>
+    <!-- 비밀번호 유효성 검사 js -->
+    <script src="/js/passwordCheck.js"></script>
+    <!-- 업체이름 중복 비교 js -->
+    <script src="/js/placeNameCheck.js"></script>
+    <!-- 회원가입 js -->
+    <script src="/js/businessSignUp.js"></script>
+    <!-- button css -->
+    <link href="/css/signUp.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="mx-auto m-3" style="width: 100%; height: 50px;">
+
+        </div>
+        <div class="mx-auto m-3 row" style="width: 100%;">
+            <div class="col-3">
+
+            </div>
+            <div class="col-6">
+                <div class="row" style="background-color: #f1575b; height: 20%;">
+                    <div class="col-2">
+
+                    </div>
+                    <div class="col-8 text-center d-flex align-items-center justify-content-md-center">
+                        <h1>
+                            <a href="/" style="text-decoration: none; color: black; font-style: italic;">LEGO</a>
+                        </h1>
+                    </div>
+                    <div class="col-2">
+
+                    </div>
+                </div>
+                <div class="row" style="height: 10%;">
+                    
+                </div>
+                <div class="row">
+                    <div class="col-3 text-center d-flex align-items-center justify-content-md-center" style="text-align: center;">
+                        <span>ID : </span>
+                    </div>
+                    <div class="col-9">
+                        <div class="row">
+                            <div class="col-8">
+                                <input type="text" class="form-control" id="id" name="id">
+                            </div>
+                            <div class="col-4">
+                                <input type="button" class="btn btn-primary btn-lego" value="아이디 중복 체크" onclick="idCheck('/business/signUpPage/idCheck');">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="height: 5%;">
+
+                </div>
+                <div class="row">
+                    <div class="col-3 text-center d-flex align-items-center justify-content-md-center" style="text-align: center;">
+                        <span>password : </span>
+                    </div>
+                    <div class="col-9">
+                        <input type="text" class="form-control" id="password" name="password" placeholder="영문, 숫자, 특수기호를 포함하여 5자리 이상으로 구성해주세요." oninput="passwordCheck1();">
+                    </div>
+                </div>
+                <div class="row" style="height: 5%;">
+                    <div class="col-12 text-center d-flex align-items-center justify-content-md-center" style="text-align: center;">
+                        <div id="passwordError1" style="color: red;"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3 text-center d-flex align-items-center justify-content-md-center" style="text-align: center;">
+                        <span>password : </span>
+                    </div>
+                    <div class="col-9">
+                        <input type="text" class="form-control" id="password2" name="password2" placeholder="입력하신 비밀번호와 일치하게 입력해주세요." oninput="passwordCheck2();">
+                    </div>
+                </div>
+                <div class="row" style="height: 5%;">
+                    <div class="col-12 text-center d-flex align-items-center justify-content-md-center" style="text-align: center;">
+                        <div id="passwordError2" style="color: red;"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3 text-center d-flex align-items-center justify-content-md-center" style="text-align: center;">
+                        <span>이름 : </span>
+                    </div>
+                    <div class="col-9">
+                        <div class="row">
+                            <div class="col-8">
+                                <input type="text" class="form-control" id="name" name="name" onclick="certifications()" placeholder="본인 인증을 진행해주세요." readonly>
+                            </div>
+                            <div class="col-4">
+                                <input type="button" class="btn btn-primary btn-lego" value="본인인증" onclick="certifications()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="height: 5%;">
+
+                </div>
+                <div class="row">
+                    <div class="col-3 text-center d-flex align-items-center justify-content-md-center" style="text-align: center;">
+                        <span>placeCall : </span>
+                    </div>
+                    <div class="col-9">
+                        <div class="row">
+                            <div class="col-8">
+                                <input type="text" class="form-control" id="placeCall" name="placeCall" placeholder="본인 인증을 진행해주세요." onclick="certifications()" readonly>
+                            </div>
+                            <div class="col-4">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="height: 5%;">
+
+                </div>
+                <div class="row">
+                    <div class="col-3 text-center d-flex align-items-center justify-content-md-center" style="text-align: center;">
+                        <span>업체이름 : </span>
+                    </div>
+                    <div class="col-9">
+                        <div class="row">
+                            <div class="col-8">
+                                <input type="text" class="form-control" id="placeName" name="placeName">
+                            </div>
+                            <div class="col-4">
+                                <input type="button" class="btn btn-primary btn-lego" value="업체 중복 체크" onclick="placeNameCheck()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="height: 5%;">
+
+                </div>
+                <div class="row">
+                    <div class="col-3 text-center d-flex align-items-center justify-content-md-center" style="text-align: center;">
+                        <span>업체주소 : </span>
+                    </div>
+                    <div class="col-9">
+                        <div class="row">
+                            <div class="col-8">
+                                <input type="text" class="form-control" id="placeAddress" name="placeAddress">
+                            </div>
+                            <div class="col-4">
+                                <input type="button" class="btn btn-primary btn-lego" value="주소 검색" id="btnplaceAddress">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="height: 5%;">
+
+                </div>
+                <div class="row">
+                    <div class="col-3 text-center d-flex align-items-center justify-content-md-center" style="text-align: center;">
+                        <span>카테고리 : </span>
+                    </div>
+                    <div class="col-9">
+                        <div class="row">
+                            <div class="col-8">
+                                <select class="form-select" id="category" name="category">
+                                    <option value="">카테고리 선택</option>
+                                    <option value="모텔">모텔</option>
+                                    <option value="호텔/리조트">호텔/리조트</option>
+                                    <option value="펜션/풀빌라">펜션/풀빌라</option>
+                                    <option value="캠핑/글램핑">캠핑/글램핑</option>
+                                    <option value="게스트하우스/한옥">게스트하우스/한옥</option>
+                                </select>
+                            </div>
+                            <div class="col-4">
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="height: 5%;">
+
+                </div>
+                <div class="row">
+                    <div class="col-3 text-center d-flex align-items-center justify-content-md-center" style="text-align: center;">
+                        <span>주차장 : </span>
+                    </div>
+                    <div class="col-9">
+                        <div class="row">
+                            <div class="col-8">
+                                <select class="form-select" id="parkingOption" name="parkingOption">
+                                    <option value="">주차장 유무 선택</option>
+                                    <option value="1">주차장 있음</option>
+                                    <option value="0">주차장 없음</option>
+                                </select>
+                            </div>
+                            <div class="col-4">
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="height: 5%;">
+
+                </div>
+                <div class="row">
+                    <div class="col-3 text-center d-flex align-items-center justify-content-md-center" style="text-align: center;">
+                        <span>흡연 : </span>
+                    </div>
+                    <div class="col-9">
+                        <div class="row">
+                            <div class="col-8">
+                                <select class="form-select" id="smokingOption" name="smokingOption">
+                                    <option value="">흡연 유무 선택</option>
+                                    <option value="1">흡연 가능</option>
+                                    <option value="0">흡연 불가</option>
+                                </select>
+                            </div>
+                            <div class="col-4">
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="height: 5%;">
+
+                </div>
+                <div class="row">
+                    <div class="col-3 text-center d-flex align-items-center justify-content-md-center" style="text-align: center;">
+                        <span>와이파이 : </span>
+                    </div>
+                    <div class="col-9">
+                        <div class="row">
+                            <div class="col-8">
+                                <select class="form-select" id="wifiOption" name="wifiOption">
+                                    <option value="">와이파이 유무 선택</option>
+                                    <option value="1">와이파이 있음</option>
+                                    <option value="0">와이파이 없음</option>
+                                </select>
+                            </div>
+                            <div class="col-4">
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="height: 5%;">
+
+                </div>
+                <div class="row">
+                    <div class="col-3 text-center d-flex align-items-center justify-content-md-center" style="text-align: center;">
+                        <span>tv 서비스 : </span>
+                    </div>
+                    <div class="col-9">
+                        <div class="row">
+                            <div class="col-8">
+                                <select class="form-select" id="ottOption" name="ottOption">
+                                    <option value="">TV 서비스 선택</option>
+                                    <option value="0">TV 서비스 없음</option>
+                                    <option value="1">NetFlix(넷플릭스)</option>
+                                    <option value="2">Wavve(웨이브)</option>
+                                    <option value="3">TVing(티빙)</option>
+                                </select>
+                            </div>
+                            <div class="col-4">
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="height: 10%;">
+
+                </div>
+                <div class="row">
+                    <div class="col-3">
+
+                    </div>
+                    <div class="col-6 d-grid">
+                        <input type="button" class="btn btn-primary btn-lego" value="회원가입" onclick="signUp();">
+                    </div>
+                    <div class="col-3">
+
+                    </div>
+                </div>
+                <div style="height: 150px;">
+
+                </div>
+            </div>
+            <div class="col-3">
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>
