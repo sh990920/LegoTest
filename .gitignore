@@ -35,3 +35,12 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### properties ###
+application.properties
+
+### portOne, path ###
+util/
+
+### css, js ###
+static/
