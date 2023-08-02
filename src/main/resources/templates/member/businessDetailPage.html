@@ -63,310 +63,378 @@
     <div style="height: 50px; width: 100%;">
 
     </div>
-    <div class="container">
-        <div class="row" style="height: 400px; width: 100%;">
+    <div class="container" style="width: 60%;">
+        <div class="row" style="width: 100%; height: 400px;">
             <div class="col-6" style="height: 100%;">
-                <div class="row" style="width: 100%; height: 10%;">
-
+                <div style="height: 20%;">
+                    
                 </div>
-                <div class="row" style="width: 100%; height: 80%;">
-                    <div class="col-1">
-
-                    </div>
-                    <div class="col-10" style="height: 100%;">
-                        <div id="carouselExample" class="carousel slide" data-bs-ride="true" style="height: 100%; width: 100%;">
-                            <div class="carousel-inner" style="height: 100%; width: 100%;">
-                                <th:block th:each="businessImage : ${businessImageList}">
-                                    <th:block th:if="${businessImageStat.count} == 1">
-                                        <div class="carousel-item active" style="height: 100%; width: 100%;">
-                                            <img th:src="@{/businessImage/} + ${businessImage.image}" class="d-block w-100" alt="..." style="height: 100%; width: 100%;">
-                                        </div>
-                                    </th:block>
-                                    <th:block th:if="${businessImageStat.count} != 1">
-                                        <div class="carousel-item"  style="height: 100%; width: 100%;">
-                                            <img th:src="@{/businessImage/} + ${businessImage.image}" class="d-block w-100" alt="..." style="height: 100%; width: 100%;">
-                                        </div>
-                                    </th:block>
-                                </th:block>
-                            </div>
-                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Previous</span>
-                            </button>
-                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Next</span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="col-1">
-
-                    </div>
-                </div>
-                <div class="row" style="width: 100%; height: 10%;">
-
-                </div>
-            </div>
-            <div class="col-6" style="height: 100%;">
-                <div class="container" style="height: 100%; width: 100%; font-size: 20px;">
-                    <div style="height: 10%;">
-                        <div th:text="${business.placeName}"></div>
-                    </div>
-                    <div style="height: 10%;">
-                        <div th:text="${business.category}"></div>
-                    </div>
-                    <div style="height: 10%;">
-                        <div th:text="${business.placeAddress}"></div>
-                    </div>
-                    <div class="row" style="height: 70%;">
-                        <div class="col-1"></div>
-                        <div class="col-10" id="map" style="border: 1px solid black; border-radius: 5%;"></div>
-                        <div class="col-1"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div style="height: 50px; width: 100%;">
-
-        </div>
-        <div class="container" style="height: 200px;">
-            <div class="row" style="width: 100%; height: 20%;">
-                <div class="col-1">
-
-                </div>
-                <div class="col-11 align-self-center" style="font-size: 20px;">
-                    시설 및 서비스
-                </div>
-            </div>
-            <div class="row" style="height: 80%;">
-                <div class="col" style="height: 100%;">
-                    <div th:if="${business.parkingOption} == 1" style="height: 100%; width: 100%;">
-                        <div class="row align-items-center" style="height: 70%; text-align: center;">
-                            <i class="fa-solid fa-vihara fa-2xl" style="color: black;"></i>
-                        </div>
-                        <div class="row align-items-center" style="height: 30%;">
-                            <div class="col-12" style="text-align: center;">
-                                주차 가능
-                            </div>
-                        </div>
-                    </div>
-                    <div th:if="${business.parkingOption} != 1" style="height: 100%; width: 100%;">
-                        <div class="row align-items-center" style="height: 70%; text-align: center;">
-                            <i class="fa-solid fa-vihara fa-2xl" style="color: black;"></i>
-                        </div>
-                        <div class="row align-items-center" style="height: 30%;">
-                            <div class="col-12" style="text-align: center;">
-                                주차 불가능
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col" style="height: 100%;">
-                    <div th:if="${business.smokingOption} == 1" style="height: 100%; width: 100%;">
-                        <div class="row align-items-center" style="height: 70%; text-align: center;">
-                            <i class="fa-solid fa-vihara fa-2xl" style="color: black;"></i>
-                        </div>
-                        <div class="row align-items-center" style="height: 30%;">
-                            <div class="col-12" style="text-align: center;">
-                                흡연 가능
-                            </div>
-                        </div>
-                    </div>
-                    <div th:if="${business.smokingOption} != 1" style="height: 100%; width: 100%;">
-                        <div class="row align-items-center" style="height: 70%; text-align: center;">
-                            <i class="fa-solid fa-vihara fa-2xl" style="color: black;"></i>
-                        </div>
-                        <div class="row align-items-center" style="height: 30%;">
-                            <div class="col-12" style="text-align: center;">
-                                흡연 불가능
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col" style="height: 100%;">
-                    <div th:if="${business.wifiOption} == 1" style="height: 100%; width: 100%;">
-                        <div class="row align-items-center" style="height: 70%; text-align: center;">
-                            <i class="fa-solid fa-vihara fa-2xl" style="color: black;"></i>
-                        </div>
-                        <div class="row align-items-center" style="height: 30%;">
-                            <div class="col-12" style="text-align: center;">
-                                와이파이 있음
-                            </div>
-                        </div>
-                    </div>
-                    <div th:if="${business.wifiOption} != 1" style="height: 100%; width: 100%;">
-                        <div class="row align-items-center" style="height: 70%; text-align: center;">
-                            <i class="fa-solid fa-vihara fa-2xl" style="color: black;"></i>
-                        </div>
-                        <div class="row align-items-center" style="height: 30%;">
-                            <div class="col-12" style="text-align: center;">
-                                와이파이 없음
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col" style="height: 100%;">
-                    <div th:if="${business.ottOption} == 0" style="height: 100%; width: 100%;">
-                        <div class="row align-items-center" style="height: 70%; text-align: center;">
-                            <i class="fa-solid fa-vihara fa-2xl" style="color: black;"></i>
-                        </div>
-                        <div class="row align-items-center" style="height: 30%;">
-                            <div class="col-12" style="text-align: center;">
-                                OTT 옵션 없음
-                            </div>
-                        </div>
-                    </div>
-                    <div th:if="${business.ottOption} == 1" style="height: 100%; width: 100%;">
-                        <div class="row align-items-center" style="height: 70%; text-align: center;">
-                            <i class="fa-solid fa-vihara fa-2xl" style="color: black;"></i>
-                        </div>
-                        <div class="row align-items-center" style="height: 30%;">
-                            <div class="col-12" style="text-align: center;">
-                                NetFlix(넷플릭스)
-                            </div>
-                        </div>
-                    </div>
-                    <div th:if="${business.ottOption} == 2" style="height: 100%; width: 100%;">
-                        <div class="row align-items-center" style="height: 70%; text-align: center;">
-                            <i class="fa-solid fa-vihara fa-2xl" style="color: black;"></i>
-                        </div>
-                        <div class="row align-items-center" style="height: 30%;">
-                            <div class="col-12" style="text-align: center;">
-                                Wavve(웨이브)
-                            </div>
-                        </div>
-                    </div>
-                    <div th:if="${business.ottOption} == 3" style="height: 100%; width: 100%;">
-                        <div class="row align-items-center" style="height: 70%; text-align: center;">
-                            <i class="fa-solid fa-vihara fa-2xl" style="color: black;"></i>
-                        </div>
-                        <div class="row align-items-center" style="height: 30%;">
-                            <div class="col-12" style="text-align: center;">
-                                TVing(티빙)
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div style="height: 50px; width: 100%;">
-
-        </div>
-        <div style="height: 50px;">
-            객실 선택
-        </div>
-        <div th:each="room : ${roomList}">
-            <div style="height: 25px; width: 100%;">
-
-            </div>
-            <div class="row" style="height: 400px; width: 100%;">
-                <div class="col-6" style="height: 100%;">
-                    <div class="row" style="width: 100%; height: 10%;">
-
-                    </div>
-                    <div class="row" style="width: 100%; height: 80%;">
-                        <div class="col-1">
-
-                        </div>
-                        <div class="col-10" style="height: 100%;">
-                            <div th:id="'carouselRoom' + ${room.idx}" class="carousel slide" data-bs-ride="true" style="height: 100%; width: 100%;">
+                <div class="container" style="height: 60%;">
+                    <div class="row" style="height: 100%; width: 100%;">
+                        <div class="col-11" style="height: 100%;">
+                            <div id="carouselExample" class="carousel slide" data-bs-ride="true" style="height: 100%; width: 100%;">
                                 <div class="carousel-inner" style="height: 100%; width: 100%;">
-                                    <th:block th:each="roomImage : ${roomImageList[roomStat.index]}">
-                                        <th:block th:if="${roomImageStat.count} == 1">
+                                    <th:block th:each="businessImage : ${businessImageList}">
+                                        <th:block th:if="${businessImageStat.count} == 1">
                                             <div class="carousel-item active" style="height: 100%; width: 100%;">
-                                                <img th:src="@{/roomImage/} + ${roomImage.image}" class="d-block w-100" alt="..." style="height: 100%; width: 100%;">
+                                                <img th:src="@{/businessImage/} + ${businessImage.image}" class="d-block w-100" alt="..." style="height: 100%; width: 100%;">
                                             </div>
                                         </th:block>
-                                        <th:block th:if="${roomImageStat.count} != 1">
-                                            <div class="carousel-item" style="height: 100%; width: 100%;">
-                                                <img th:src="@{/roomImage/} + ${roomImage.image}" class="d-block w-100" alt="..." style="height: 100%; width: 100%;">
+                                        <th:block th:if="${businessImageStat.count} != 1">
+                                            <div class="carousel-item"  style="height: 100%; width: 100%;">
+                                                <img th:src="@{/businessImage/} + ${businessImage.image}" class="d-block w-100" alt="..." style="height: 100%; width: 100%;">
                                             </div>
                                         </th:block>
                                     </th:block>
                                 </div>
-                                <button class="carousel-control-prev" type="button" th:data-bs-target="'#carouselRoom' + ${room.idx}" data-bs-slide="prev">
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Previous</span>
                                 </button>
-                                <button class="carousel-control-next" type="button" th:data-bs-target="'#carouselRoom' + ${room.idx}" data-bs-slide="next">
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Next</span>
                                 </button>
                             </div>
                         </div>
-                        <div class="col-1">
-
+                        <div class="col-1" style="height: 100%;">
+                            
                         </div>
-                    </div>
-                    <div class="row" style="width: 100%; height: 10%;">
-
                     </div>
                 </div>
-                <div class="col-6" style="height: 100%;">
-                    <div class="row" style="width: 100%; height: 10%;">
+                <div style="height: 20%;">
+                    
+                </div>
+            </div>
+            <div class="col-6" style="height: 100%;">
+                <div class="row align-items-center" style="width: 100%; height: 15%;">
+                    <div th:text="${business.placeName}" style="font-size: 25px;">이름</div>
+                </div>
+                <div class="row align-items-center" style="width: 100%; height: 10%;">
+                    <div th:text="${business.category}" style="font-size: 20px;">타입</div>
+                </div>
+                <div class="row align-items-center" style="width: 100%; height: 15%;">
+                    <div th:text="${business.placeAddress}" style="font-size: 20px;">서울 강남구 논현동 6</div>
+                </div>
+                <div class="row" style="width: 100%; height: 60%;">
+                    <div id="map" style="border: 1px solid black; border-radius: 5%;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="width: 100%; height: 50px;">
 
-                    </div>
-                    <div class="row" style="width: 100%; height: 80%;">
-                        <div class="col-1">
+        </div>
+        <div class="row align-items-center" style="margin: 0%; width: 100%; height: 50px;">
+            <div style="font-size: 20px;">시설 및 서비스</div>
+        </div>
+        <div class="row" style="width: 100%; height: 20px;">
 
+        </div>
+        <div class="row" style="width: 100%; height: 150px;">
+            <div class="col-3" style="height: 100%;">
+                <th:block th:if="${business.parkingOption} == 1">
+                    <div class="row" style="margin: 0%; width: 100%; height: 70%;">
+                        <div class="col-2">
+    
                         </div>
-                        <div class="col-10" style="height: 100%; font-size: 20px;">
-                            <form method="get" action="/placePost/roomPost/" style="height: 100%; width: 100%;">
-                                <input type="hidden" th:value="${room.idx}" name="idx">
-                                <div style="height: 20%; width: 100%;">
-                                    <div th:text="${room.roomName}">
-                                        객실 이름
-                                    </div>
-                                </div>
-                                <div style="height: 20%; width: 100%;">
-                                    <div th:text="${room.price}">
-                                        가격
-                                    </div>
-                                </div>
-                                <div style="height: 20%; width: 100%;">
-                                    <div style="height: 50%; width: 100%;">
-                                        <div>인원 수</div>
-                                    </div>
-                                    <div class="row" style="height: 50%; width: 100%;">
-                                        <div class="col-6">
-                                            <span th:text="${room.minPersonnel}"></span>
-                                        </div>
-                                        <div class="col-6">
-                                            <span th:text="${room.maxPersonnel}"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div style="height: 20%; width: 100%;">
-                                    <div style="height: 50%; width: 100%;">
-                                        <div>체크인 시간</div>
-                                    </div>
-                                    <div class="row" style="height: 50%; width: 100%;">
-                                        <div class="col-6">
-                                            <span th:text="${room.checkInTime}"></span>
-                                        </div>
-                                        <div class="col-6">
-                                            <span th:text="${room.checkOutTime}"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div style="height: 20%; width: 100%;">
-                                    <input class="btn btn-primary" type="submit" value="상세보기">
-                                </div>
-                            </form>
+                        <div class="col-8" style="height: 100%;">
+                            <img src="https://picsum.photos/105/105" style="text-align: center; width: 100%; height: 100%;">
                         </div>
-                        <div class="col-1">
-
+                        <div class="col-2">
+    
                         </div>
                     </div>
-                    <div class="row" style="width: 100%; height: 10%;">
+                    <div class="row align-items-center" style="margin: 0%; width: 100%; height: 30%;">
+                        <div style="text-align: center;">주차 가능</div>
+                    </div>
+                </th:block>
+                <th:block th:if="${business.parkingOption} != 1">
+                    <div class="row" style="margin: 0%; width: 100%; height: 70%;">
+                        <div class="col-2">
+    
+                        </div>
+                        <div class="col-8" style="height: 100%;">
+                            <img src="https://picsum.photos/105/105" style="text-align: center; width: 100%; height: 100%;">
+                        </div>
+                        <div class="col-2">
+    
+                        </div>
+                    </div>
+                    <div class="row align-items-center" style="margin: 0%; width: 100%; height: 30%;">
+                        <div style="text-align: center;">주차 불가능</div>
+                    </div>
+                </th:block>
+            </div>
+            <div class="col-3" style="height: 100%;">
+                <th:block th:if="${business.smokingOption} == 1">
+                    <div class="row" style="margin: 0%; width: 100%; height: 70%;">
+                        <div class="col-2">
+    
+                        </div>
+                        <div class="col-8" style="height: 100%;">
+                            <img src="https://picsum.photos/105/105" style="text-align: center; width: 100%; height: 100%;">
+                        </div>
+                        <div class="col-2">
+    
+                        </div>
+                    </div>
+                    <div class="row align-items-center" style="margin: 0%; width: 100%; height: 30%;">
+                        <div style="text-align: center;">흡연 가능</div>
+                    </div>
+                </th:block>
+                <th:block th:if="${business.smokingOption} != 1">
+                    <div class="row" style="margin: 0%; width: 100%; height: 70%;">
+                        <div class="col-2">
+    
+                        </div>
+                        <div class="col-8" style="height: 100%;">
+                            <img src="https://picsum.photos/105/105" style="text-align: center; width: 100%; height: 100%;">
+                        </div>
+                        <div class="col-2">
+    
+                        </div>
+                    </div>
+                    <div class="row align-items-center" style="margin: 0%; width: 100%; height: 30%;">
+                        <div style="text-align: center;">흡연 불가능</div>
+                    </div>
+                </th:block>
+            </div>
+            <div class="col-3" style="height: 100%;">
+                <th:block th:if="${business.wifiOption} == 1">
+                    <div class="row" style="margin: 0%; width: 100%; height: 70%;">
+                        <div class="col-2">
+    
+                        </div>
+                        <div class="col-8" style="height: 100%;">
+                            <img src="https://picsum.photos/105/105" style="text-align: center; width: 100%; height: 100%;">
+                        </div>
+                        <div class="col-2">
+    
+                        </div>
+                    </div>
+                    <div class="row align-items-center" style="margin: 0%; width: 100%; height: 30%;">
+                        <div style="text-align: center;">와이파이 있음</div>
+                    </div>
+                </th:block>
+                <th:block th:if="${business.wifiOption} != 1">
+                    <div class="row" style="margin: 0%; width: 100%; height: 70%;">
+                        <div class="col-2">
+    
+                        </div>
+                        <div class="col-8" style="height: 100%;">
+                            <img src="https://picsum.photos/105/105" style="text-align: center; width: 100%; height: 100%;">
+                        </div>
+                        <div class="col-2">
+    
+                        </div>
+                    </div>
+                    <div class="row align-items-center" style="margin: 0%; width: 100%; height: 30%;">
+                        <div style="text-align: center;">와이파이 없음</div>
+                    </div>
+                </th:block>
+            </div>
+            <div class="col-3" style="height: 100%;">
+                <th:block th:if="${business.ottOption} == 0">
+                    <div class="row" style="margin: 0%; width: 100%; height: 70%;">
+                        <div class="col-2">
+    
+                        </div>
+                        <div class="col-8" style="height: 100%;">
+                            <img src="https://picsum.photos/105/105" style="text-align: center; width: 100%; height: 100%;">
+                        </div>
+                        <div class="col-2">
+    
+                        </div>
+                    </div>
+                    <div class="row align-items-center" style="margin: 0%; width: 100%; height: 30%;">
+                        <div style="text-align: center;">tv 옵션 없음</div>
+                    </div>
+                </th:block>
+                <th:block th:if="${business.ottOption} == 1">
+                    <div class="row" style="margin: 0%; width: 100%; height: 70%;">
+                        <div class="col-2">
+    
+                        </div>
+                        <div class="col-8" style="height: 100%;">
+                            <img src="https://picsum.photos/105/105" style="text-align: center; width: 100%; height: 100%;">
+                        </div>
+                        <div class="col-2">
+    
+                        </div>
+                    </div>
+                    <div class="row align-items-center" style="margin: 0%; width: 100%; height: 30%;">
+                        <div style="text-align: center;">NetFlex(넷플릭스)</div>
+                    </div>
+                </th:block>
+                <th:block th:if="${business.ottOption} == 2">
+                    <div class="row" style="margin: 0%; width: 100%; height: 70%;">
+                        <div class="col-2">
+    
+                        </div>
+                        <div class="col-8" style="height: 100%;">
+                            <img src="https://picsum.photos/105/105" style="text-align: center; width: 100%; height: 100%;">
+                        </div>
+                        <div class="col-2">
+    
+                        </div>
+                    </div>
+                    <div class="row align-items-center" style="margin: 0%; width: 100%; height: 30%;">
+                        <div style="text-align: center;">Wavve(웨이브)</div>
+                    </div>
+                </th:block>
+                <th:block th:if="${business.ottOption} == 3">
+                    <div class="row" style="margin: 0%; width: 100%; height: 70%;">
+                        <div class="col-2">
+    
+                        </div>
+                        <div class="col-8" style="height: 100%;">
+                            <img src="https://picsum.photos/105/105" style="text-align: center; width: 100%; height: 100%;">
+                        </div>
+                        <div class="col-2">
+    
+                        </div>
+                    </div>
+                    <div class="row align-items-center" style="margin: 0%; width: 100%; height: 30%;">
+                        <div style="text-align: center;">TVing(티빙)</div>
+                    </div>
+                </th:block>
+            </div>
+        </div>
+        <div class="row" style="width: 100%; height: 50px;">
 
+        </div>
+        <div class="row align-items-center" style="width: 100%; height: 100px;">
+            <div style="font-size: 20px;">객실 안내/예약</div>
+        </div>
+        <div class="row" style="width: 100%; height: 100px;">
+            <div class="col-3" style="height: 100%;">
+                <div class="row align-items-center" style="width: 100%; height: 50%;">
+                    <div style="font-size: 20px;">체크인</div>
+                </div>
+                <div class="row" style="width: 100%; height: 50%;">
+                    <input id="checkInDate" type="date" onchange="dateCheck();">
+                </div>
+            </div>
+            <div class="col-3" style="height: 100%;">
+                <div class="row align-items-center" style="width: 100%; height: 50%;">
+                    <div style="font-size: 20px;">체크아웃</div>
+                </div>
+                <div class="row" style="width: 100%; height: 50%;">
+                    <input id="checkOutDate" type="date" onchange="dateCheck();">
+                </div>
+            </div>
+            <div class="col-6" style="height: 100%;">
+                <div class="row align-items-center" style="width: 100%; height: 50%;">
+                    <div style="font-size: 20px;">예약인원</div>
+                </div>
+                <div class="row align-items-center" style="width: 100%; height: 50%;">
+                    <div class="col-4" style="text-align: center; height: 100%;">
+                        <input style="height: 100%; width: 100%; font-size: 25px;" type="button" value="+" onclick="personnelCount('+');">
+                    </div>
+                    <div class="col-4" style="text-align: center; height: 100%;">
+                        <div class="row align-items-center" style="margin: 0%; width: 100%; height: 100%;">
+                            <div id="personnelText" style="width: 100%; font-size: 25px;">
+                                0
+                            </div>
+                            <input id="personnel" name="personnel" type="hidden" value="0">
+                        </div>
+                    </div>
+                    <div class="col-4" style="text-align: center; height: 100%;">
+                        <input style="height: 100%; width: 100%; font-size: 25px;" type="button" value="-" onclick="personnelCount('-');">
                     </div>
                 </div>
             </div>
         </div>
-        <div style="height: 35px; width: 100%;">
+        <div class="row" style="width: 100%; height: 50px;">
 
         </div>
+        <th:block th:each="room : ${roomList}">
+            <div class="row" style="width: 100%; height: 250px; border: 1px solid gray;">
+                <div class="container">
+                    <div class="row" style="width: 100%; height: 100%;">
+                        <div class="col-5" style="height: 100%;">
+                            <div class="container" style="height: 100%;">
+                                <div class="row" style="height: 10%;">
+    
+                                </div>
+                                <div class="row" style="height: 80%;">
+                                    <div class="col-11" style="height: 100%;">
+                                        <div th:id="'carouselRoom' + ${room.idx}" class="carousel slide" data-bs-ride="true" style="height: 100%; width: 100%;">
+                                            <div class="carousel-inner" style="height: 100%; width: 100%;">
+                                                <th:block th:each="roomImage : ${roomImageList[roomStat.index]}">
+                                                    <th:block th:if="${roomImageStat.count} == 1">
+                                                        <div class="carousel-item active" style="height: 100%; width: 100%;">
+                                                            <img th:src="@{/roomImage/} + ${roomImage.image}" class="d-block w-100" alt="..." style="height: 100%; width: 100%;">
+                                                        </div>
+                                                    </th:block>
+                                                    <th:block th:if="${roomImageStat.count} != 1">
+                                                        <div class="carousel-item" style="height: 100%; width: 100%;">
+                                                            <img th:src="@{/roomImage/} + ${roomImage.image}" class="d-block w-100" alt="..." style="height: 100%; width: 100%;">
+                                                        </div>
+                                                    </th:block>
+                                                </th:block>
+                                            </div>
+                                            <button class="carousel-control-prev" type="button" th:data-bs-target="'#carouselRoom' + ${room.idx}" data-bs-slide="prev">
+                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                <span class="visually-hidden">Previous</span>
+                                            </button>
+                                            <button class="carousel-control-next" type="button" th:data-bs-target="'#carouselRoom' + ${room.idx}" data-bs-slide="next">
+                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                <span class="visually-hidden">Next</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="col-1" style="height: 100%;">
+    
+                                    </div>
+                                </div>
+                                <div class="row" style="height: 10%;">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-7" style="height: 100%;">
+                            <form method="get" action="/placePost/roomPost/" style="height: 100%; width: 100%;">
+                                <input type="hidden" th:value="${room.idx}" name="idx">
+                                <div class="row" style="height: 70%;">
+                                    <div class="container" style="height: 50%;">
+                                        <div class="row align-items-center" style="width: 100%; height: 100%;">
+                                            <div th:text="${room.roomName}" style="font-size: 25px;">방 이름</div>
+                                        </div>
+                                    </div>
+                                    <div class="container" style="height: 50%;">
+                                        <div class="row align-items-center" style="width: 100%; height: 100%;">
+                                            <div class="col-6" style="font-size: 20px;">
+                                                가격
+                                            </div>
+                                            <input type="hidden" th:value="${room.price}">
+                                            <input type="hidden" th:value="${room.price}" id="price">
+                                            <div th:text="${room.price} + '원'" class="col-6" style="font-size: 20px; text-align: end;">
+                                                100000원
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row align-items-center" style="height: 30%;">
+                                    <div class="col-2">
+    
+                                    </div>
+                                    <div class="col-8 d-grid" style="height: 60%;">
+                                        <input class="btn btn-primary" id="'btn' + ${room.idx}" type="submit" value="예약하기">
+                                    </div>
+                                    <div class="col-2">
+                                        
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="width: 100%; height: 50px;">
+    
+            </div>
+        </th:block>
     </div>
 
     <footer class="footer">
@@ -458,5 +526,129 @@
 </body>
 <!-- 카카오맵 api -->
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=57327f1e4db78ff9380934b5d4ecfedd&libraries=services"></script>
-<script src="/js/cacaoMap.js"></script>
+<script>
+    var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+    mapOption = {
+        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+        level: 3 // 지도의 확대 레벨
+    };
+
+    // 지도를 생성합니다
+    var map = new kakao.maps.Map(mapContainer, mapOption);
+
+    // 주소-좌표 변환 객체를 생성합니다
+    var geocoder = new kakao.maps.services.Geocoder();
+
+    // 주소로 좌표를 검색합니다
+    geocoder.addressSearch('[[${business.placeAddress}]]', function(result, status) {
+
+        // 정상적으로 검색이 완료됐으면
+         if (status === kakao.maps.services.Status.OK) {
+
+            var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+            // 결과값으로 받은 위치를 마커로 표시합니다
+            var marker = new kakao.maps.Marker({
+                map: map,
+                position: coords
+            });
+
+            // 인포윈도우로 장소에 대한 설명을 표시합니다
+            var infowindow = new kakao.maps.InfoWindow({
+                content: '<div style="width:150px;text-align:center;padding:6px 0;" >[[${business.placeName}]]</div>'
+            });
+            infowindow.open(map, marker);
+
+            // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+            map.setCenter(coords);
+        }
+    });
+</script>
+<script>
+    function personnelCount(cul){
+        let personnel = document.getElementById("personnel").value;
+        let personnelText = document.getElementById("personnelText");
+        if(cul == "+"){
+            personnel = Number(personnel) + 1;
+            personnelText.innerText = personnel;
+        }else if(cul == "-"){
+            if(Number(personnel) == 0){
+                alert("인원은 최소 1명이상 입니다.");
+                return;
+            }else{
+                personnel = Number(personnel) - 1;
+            }
+            personnelText.innerText = personnel;
+        }
+    }
+</script>
+<script>
+    const offset = 1000 * 60 * 60 * 9;
+    let koreanDate = new Date((new Date()).getTime() + offset);
+    let koreanDate2 = new Date((new Date()).getTime() + offset);
+    let nextDate = new Date(koreanDate2.setDate(koreanDate.getDate() + 1));
+    document.getElementById('checkInDate').value = koreanDate.toISOString().substring(0, 10);
+    document.getElementById('checkOutDate').value = nextDate.toISOString().substring(0, 10);
+</script>
+<script th:inline="javascript">
+    const defaultPrice = document.getElementById("price").value;
+    function dateCheck(){
+        let checkIn = document.getElementById("checkInDate");
+        let checkOut = document.getElementById("checkOutDate");
+        let price = defaultPrice;
+        let checkInDate = new Date(checkIn.value);
+        let checkOutDate = new Date(checkOut.value);
+
+        let bookingArray = new Array();
+        let booking = new Object();
+        let bookingCheckOutDate = null;
+        let bookingCheckInDate = null;
+        let btn = "";
+        /*[# th:each="booking : ${bookingList}"]*/
+        booking.checkInDate = /*[[${booking.checkInDate}]]*/;
+        booking.checkOutDate = /*[[${booking.checkOutDate}]]*/;
+        bookingCheckInDate = new Date(booking.checkInDate);
+        bookingCheckOutDate = new Date(booking.checkOutDate);
+        btn = "btn" + /*[[${booking.roomIdx}]]*/;
+        if(checkInDate >= bookingCheckInDate && checkInDate <= bookingCheckOutDate){
+            document.getElementById(btn).disabled = true;
+            return;
+        }
+        if(checkInDate < bookingCheckInDate || checkInDate > bookingCheckOutDate){
+            document.getElementById(btn).disabled = false;
+            return;
+        }
+        if(checkOutDate >= bookingCheckInDate && checkOutDate <= bookingCheckOutDate){
+            document.getElementById(btn).disabled = true;
+            return;
+        }
+        if(checkOutDate < bookingCheckInDate || checkOutDate > bookingCheckOutDate){
+            document.getElementById(btn).disabled = false;
+            return;
+        }
+        bookingArray.push(booking);
+        /*[/]*/
+        
+        let resultCheckArray = new Array();
+        if(checkInDate >= checkOutDate){
+            alert("체크아웃 날짜는 체크인 날짜보다 빠를 수 없습니다.\n체크이웃 날짜를 다시 입력하세요.");
+            /*[# th:each="booking : ${bookingList}"]*/
+            booking.roomIdx = /*[[${booking.roomIdx}]]*/
+            document.getElementById(booking.roomIdx).disabled = true;
+            resultCheckArray.push(booking);
+            /*[/]*/
+            return;
+        }
+        if(checkInDate < checkOutDate){
+            alert("체크아웃 날짜는 체크인 날짜보다 빠를 수 없습니다.\n체크이웃 날짜를 다시 입력하세요.");
+            /*[# th:each="booking : ${bookingList}"]*/
+            booking.roomIdx = /*[[${booking.roomIdx}]]*/
+            document.getElementById(booking.roomIdx).disabled = false;
+            resultCheckArray.push(booking);
+            /*[/]*/
+            return;
+        }
+
+    }
+</script>
 </html>

@@ -114,6 +114,8 @@ public class MemberController {
         // 업체의 방에 관련된 사진 리스트를 생성
         List<List> roomImageList = roomService.findDetailRoomImageList(business.getIdx());
 
+        List<Booking> bookingList = bookingService.bookingList(business1.getIdx());
+        model.addAttribute("bookingList", bookingList);
         // 방 이미지 리스트를 상세 페이지에서 사용하기 위해 model 바인딩
         model.addAttribute("roomImageList", roomImageList);
         // 업체 이미지 리스트를 상세 페이지에서 사용하기 위해 model 바인딩

@@ -75,4 +75,9 @@ public class BookingService {
         return bookingList;
     }
 
+    public List<Booking> bookingList(Long businessIdx){
+        List<Booking> bookingList = bookingRepository.findByBusinessIdx(businessIdx);
+        return bookingList;
+    }
+
 }
