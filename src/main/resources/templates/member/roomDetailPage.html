@@ -356,11 +356,14 @@
             alert("현재 날짜 이전의 날짜는 예약할 수 없습니다.");
             checkIn.value = koreanDate.toISOString().substring(0, 10);
             checkOut.value = nextDate.toISOString().substring(0, 10);
+            return;
         }
         // 만약 체크인 날짜보다 체크아웃 날짜가 더 먼저라면 alert 창으로 경고 후 checkOutDate 초기화
         if(checkInDate >= checkOutDate){
             alert("체크아웃 날짜는 체크인 날짜보다 빠를 수 없습니다.\n체크이웃 날짜를 다시 입력하세요.");
-            checkOut.value = new Date(checkOutDate.setDate(checkInDate.getDate() + 1)).toISOString().substring(0, 10);
+            let nextDate = new Date(checkInDate);
+            nextDate.setDate(nextDate.getDate() + 1);
+            checkOut.value = nextDate.toISOString().substring(0, 10);
         }
         dateCheck2();
     }
