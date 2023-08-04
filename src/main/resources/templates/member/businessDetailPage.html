@@ -312,7 +312,7 @@
                     <div style="font-size: 20px;">체크인</div>
                 </div>
                 <div class="row" style="width: 100%; height: 50%;">
-                    <input id="checkInDate" type="date" onchange="dateCheck();">
+                    <input type="date" id="checkInDate" onchange="dateCheck1();">
                 </div>
             </div>
             <div class="col-3" style="height: 100%;">
@@ -320,29 +320,11 @@
                     <div style="font-size: 20px;">체크아웃</div>
                 </div>
                 <div class="row" style="width: 100%; height: 50%;">
-                    <input id="checkOutDate" type="date" onchange="dateCheck();">
+                    <input id="checkOutDate" type="date" onchange="dateCheck1();">
                 </div>
             </div>
             <div class="col-6" style="height: 100%;">
-                <div class="row align-items-center" style="width: 100%; height: 50%;">
-                    <div style="font-size: 20px;">예약인원</div>
-                </div>
-                <div class="row align-items-center" style="width: 100%; height: 50%;">
-                    <div class="col-4" style="text-align: center; height: 100%;">
-                        <input style="height: 100%; width: 100%; font-size: 25px;" type="button" value="+" onclick="personnelCount('+');">
-                    </div>
-                    <div class="col-4" style="text-align: center; height: 100%;">
-                        <div class="row align-items-center" style="margin: 0%; width: 100%; height: 100%;">
-                            <div id="personnelText" style="width: 100%; font-size: 25px;">
-                                0
-                            </div>
-                            <input id="personnel" name="personnel" type="hidden" value="0">
-                        </div>
-                    </div>
-                    <div class="col-4" style="text-align: center; height: 100%;">
-                        <input style="height: 100%; width: 100%; font-size: 25px;" type="button" value="-" onclick="personnelCount('-');">
-                    </div>
-                </div>
+                
             </div>
         </div>
         <div class="row" style="width: 100%; height: 50px;">
@@ -394,7 +376,6 @@
                             </div>
                         </div>
                         <div class="col-7" style="height: 100%;">
-                            <form method="get" action="/placePost/roomPost/" style="height: 100%; width: 100%;">
                                 <input type="hidden" th:value="${room.idx}" name="idx">
                                 <div class="row" style="height: 70%;">
                                     <div class="container" style="height: 50%;">
@@ -407,9 +388,7 @@
                                             <div class="col-6" style="font-size: 20px;">
                                                 가격
                                             </div>
-                                            <input type="hidden" th:value="${room.price}">
-                                            <input type="hidden" th:value="${room.price}" id="price">
-                                            <div th:text="${room.price} + '원'" class="col-6" style="font-size: 20px; text-align: end;">
+                                            <div th:text="${room.price} + '원/1일 기준'" class="col-6" style="font-size: 20px; text-align: end;">
                                                 100000원
                                             </div>
                                         </div>
@@ -420,13 +399,12 @@
     
                                     </div>
                                     <div class="col-8 d-grid" style="height: 60%;">
-                                        <input class="btn btn-primary" id="'btn' + ${room.idx}" type="submit" value="예약하기">
+                                        <input class="btn btn-primary" th:id="'btn' + ${room.idx}" type="button" value="예약하기" th:onclick="roomDetail([[${room.idx}]])">
                                     </div>
                                     <div class="col-2">
                                         
                                     </div>
                                 </div>
-                            </form>
                         </div>
                     </div>
                 </div>
@@ -565,90 +543,120 @@
     });
 </script>
 <script>
-    function personnelCount(cul){
-        let personnel = document.getElementById("personnel").value;
-        let personnelText = document.getElementById("personnelText");
-        if(cul == "+"){
-            personnel = Number(personnel) + 1;
-            personnelText.innerText = personnel;
-        }else if(cul == "-"){
-            if(Number(personnel) == 0){
-                alert("인원은 최소 1명이상 입니다.");
+    // 한국 날짜를 구하는 offset
+    const offset = 1000 * 60 * 60 * 9;
+    // 오늘 날짜 구하기
+    const koreanDate = new Date((new Date()).getTime() + offset);
+    // 다음날 날짜를 구하기 위해서 변수 하나더 생성
+    const koreanDate2 = new Date((new Date()).getTime() + offset);
+    // 다음날 날짜 구하기
+    const nextDate = new Date(koreanDate2.setDate(koreanDate.getDate() + 1));
+    // 현재 날짜를 체크인 날짜에 넣어주기
+    document.getElementById('checkInDate').value = koreanDate.toISOString().substring(0, 10);
+    // 내일 날짜를 체크아웃 날짜에 넣어주기
+    document.getElementById('checkOutDate').value = nextDate.toISOString().substring(0, 10);
+</script>
+<script>
+    function dateCheck1(){
+        // 체크인 태그 가져오기
+        let checkIn = document.getElementById("checkInDate");
+        // 체크아웃 태그 가져오기
+        let checkOut = document.getElementById("checkOutDate");
+        // 체크인 날짜 구하기
+        let checkInDate = new Date(checkIn.value);
+        // 체크아웃 날짜 구하기
+        let checkOutDate = new Date(checkOut.value);
+        // 오늘 날짜 구하기(숫자)
+        let today = Number(koreanDate.toISOString().substring(0, 4) + koreanDate.toISOString().substring(5, 7) + koreanDate.toISOString().substring(8, 10));
+        // 예약 하려는 날짜 구하기(숫자)
+        let checkInDay = Number(checkInDate.toISOString().substring(0, 4) + checkInDate.toISOString().substring(5, 7) + checkInDate.toISOString().substring(8, 10));
+        // 만약 예약하려는 날짜가 더 빠르다면 날짜 초기화
+        if(today > checkInDay){
+            alert("현재 날짜 이전의 날짜는 예약할 수 없습니다.");
+            checkIn.value = koreanDate.toISOString().substring(0, 10);
+            checkOut.value = nextDate.toISOString().substring(0, 10);
+            return;
+        }
+        // 만약 체크인 날짜보다 체크아웃 날짜가 더 먼저라면 alert 창으로 경고 후 checkOutDate 초기화
+        if(checkInDate >= checkOutDate){
+            alert("체크아웃 날짜는 체크인 날짜보다 빠를 수 없습니다.\n체크이웃 날짜를 다시 입력하세요.");
+            let nextDate = new Date(checkInDate);
+            nextDate.setDate(nextDate.getDate() + 1);
+            checkOut.value = nextDate.toISOString().substring(0, 10);
+        }
+        dateCheck2();
+    }
+</script>
+<script th:inline="javascript">
+    function dateCheck2(){
+        // 체크인 태그 가져오기
+        let checkIn = document.getElementById("checkInDate");
+        // 체크아웃 태그 가져오기
+        let checkOut = document.getElementById("checkOutDate");
+        // 체크인 날짜 가져오기
+        let checkInDate = new Date(checkIn.value);
+        // 체크아웃 날짜 가져오기
+        let checkOutDate = new Date(checkOut.value);
+
+        // booking 객체를 사용하기 위해서 새로운 오브젝트 생성
+        let booking = new Object();
+        // for 문에서 사용할 예약 체크인 날짜 변수 생성
+        let bookingCheckOutDate = null;
+        // for 문에서 사용할 예약 체크아웃 날짜 변수 생성
+        let bookingCheckInDate = null;
+        // for 문에서 사용할 버튼 변수 생성
+        let btn = "";
+        // 체크인 날짜 에서 체크아웃 날짜를 뺴고 남은 시간 구하기
+        let diffDate = checkInDate.getTime() - checkOutDate.getTime();
+        // 기간 내에 비교를 하기 위해서 일수로 변경(시작 날짜와 마지막 날짜 까지 비교하기 위해서 1 추가)        
+        let days = Math.abs(diffDate / (1000 * 60 * 60 * 24)) + 1;
+        // 날짜 체크를 위해서 변수 생성
+        let checkDate = null;
+        // 예약 리스트 forEach 로 사용
+        /*[# th:each="booking : ${bookingList}"]*/
+        // 체크인 날짜를 booking 객체의 변수에 저장
+        booking.checkInDate = /*[[${booking.checkInDate}]]*/;
+        // 체크아웃 날짜를 booking 객체의 변수에 저장
+        booking.checkOutDate = /*[[${booking.checkOutDate}]]*/;
+        // 문자열 타입을 실제 Date 함수로 변경
+        bookingCheckInDate = new Date(booking.checkInDate);
+        bookingCheckOutDate = new Date(booking.checkOutDate);
+        // 버튼 변수에 버튼 이름 저장하기
+        btn = "btn" + /*[[${booking.roomIdx}]]*/;
+        // 기간 만큼 비교하기
+        for(let i = 0; i < days; i++){
+            // 만약 맨 처음 for 문을 실행중이라면 checkInDate 에서 날짜를 얻어온 이후 i(날짜)를 추가
+            if(i == 0){
+                checkDate = new Date(checkInDate.setDate(checkInDate.getDate() + i));
+            // 그렇지 않다면 저장되있는 checkDate 에 i(날짜)를 추가
+            }else{
+                checkDate = new Date(checkDate.setDate(checkInDate.getDate() + i));
+            }
+            // 만약 예약하려는 날짜가 예약된 날짜 안에 있다면 버튼을 클릭할 수 없게 만든다.
+            if(checkDate >= bookingCheckInDate && checkDate <= bookingCheckOutDate){
+                document.getElementById(btn).disabled = true;
+                document.getElementById(btn).value = "예약 마감";
+                document.getElementById(btn).style.backgroundColor = "gray";
                 return;
             }else{
-                personnel = Number(personnel) - 1;
+                document.getElementById(btn).disabled = false;
+                document.getElementById(btn).value = "예약하기";
+                document.getElementById(btn).style.backgroundColor = "";
             }
-            personnelText.innerText = personnel;
         }
+        /*[/]*/
     }
 </script>
 <script>
-    const offset = 1000 * 60 * 60 * 9;
-    let koreanDate = new Date((new Date()).getTime() + offset);
-    let koreanDate2 = new Date((new Date()).getTime() + offset);
-    let nextDate = new Date(koreanDate2.setDate(koreanDate.getDate() + 1));
-    document.getElementById('checkInDate').value = koreanDate.toISOString().substring(0, 10);
-    document.getElementById('checkOutDate').value = nextDate.toISOString().substring(0, 10);
+    dateCheck1();
 </script>
-<script th:inline="javascript">
-    const defaultPrice = document.getElementById("price").value;
-    function dateCheck(){
-        let checkIn = document.getElementById("checkInDate");
-        let checkOut = document.getElementById("checkOutDate");
-        let price = defaultPrice;
-        let checkInDate = new Date(checkIn.value);
-        let checkOutDate = new Date(checkOut.value);
-
-        let bookingArray = new Array();
-        let booking = new Object();
-        let bookingCheckOutDate = null;
-        let bookingCheckInDate = null;
-        let btn = "";
-        /*[# th:each="booking : ${bookingList}"]*/
-        booking.checkInDate = /*[[${booking.checkInDate}]]*/;
-        booking.checkOutDate = /*[[${booking.checkOutDate}]]*/;
-        bookingCheckInDate = new Date(booking.checkInDate);
-        bookingCheckOutDate = new Date(booking.checkOutDate);
-        btn = "btn" + /*[[${booking.roomIdx}]]*/;
-        if(checkInDate >= bookingCheckInDate && checkInDate <= bookingCheckOutDate){
-            document.getElementById(btn).disabled = true;
-            return;
-        }
-        if(checkInDate < bookingCheckInDate || checkInDate > bookingCheckOutDate){
-            document.getElementById(btn).disabled = false;
-            return;
-        }
-        if(checkOutDate >= bookingCheckInDate && checkOutDate <= bookingCheckOutDate){
-            document.getElementById(btn).disabled = true;
-            return;
-        }
-        if(checkOutDate < bookingCheckInDate || checkOutDate > bookingCheckOutDate){
-            document.getElementById(btn).disabled = false;
-            return;
-        }
-        bookingArray.push(booking);
-        /*[/]*/
-        
-        let resultCheckArray = new Array();
-        if(checkInDate >= checkOutDate){
-            alert("체크아웃 날짜는 체크인 날짜보다 빠를 수 없습니다.\n체크이웃 날짜를 다시 입력하세요.");
-            /*[# th:each="booking : ${bookingList}"]*/
-            booking.roomIdx = /*[[${booking.roomIdx}]]*/
-            document.getElementById(booking.roomIdx).disabled = true;
-            resultCheckArray.push(booking);
-            /*[/]*/
-            return;
-        }
-        if(checkInDate < checkOutDate){
-            alert("체크아웃 날짜는 체크인 날짜보다 빠를 수 없습니다.\n체크이웃 날짜를 다시 입력하세요.");
-            /*[# th:each="booking : ${bookingList}"]*/
-            booking.roomIdx = /*[[${booking.roomIdx}]]*/
-            document.getElementById(booking.roomIdx).disabled = false;
-            resultCheckArray.push(booking);
-            /*[/]*/
-            return;
-        }
-
+<script>
+    function roomDetail(idx){
+        let url = "/placePost/roomPost/";
+        let paramRoomIdx = "idx=" + idx;
+        let paramCheckInDate = "checkInDate=" + document.getElementById("checkInDate").value;
+        let paramCheckOutDate = "checkOutDate=" + document.getElementById("checkOutDate").value;
+        location.href = url + "?" + paramRoomIdx + "&" + paramCheckInDate + "&" + paramCheckOutDate;
     }
 </script>
 </html>

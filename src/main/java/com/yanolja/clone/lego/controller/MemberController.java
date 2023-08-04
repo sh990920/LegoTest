@@ -130,7 +130,7 @@ public class MemberController {
 
     // 방 상세보기
     @GetMapping("/placePost/roomPost/")
-    public String roomPostPage(Room room, Principal principal, Model model){
+    public String roomPostPage(String checkInDate, String checkOutDate, Room room, Principal principal, Model model){
         // 접속한 사용자가 누구인지 알기 위해 id 얻어오기
         String id = principal.getName();
         // 얻어온 id 로 사용자 검색
@@ -140,9 +140,13 @@ public class MemberController {
         // 방에 관련된 사진 리스트를 검색
         List<RoomImage> roomImageList = roomService.findRoomImageList(room.getIdx());
 
-        List<Booking> bookingList = bookingService.bookingList(room1.getBusinessIdx(), room1.getIdx());
-        model.addAttribute("bookingList", bookingList);
 
+        model.addAttribute("checkInDate", checkInDate);
+        model.addAttribute("checkOutDate", checkOutDate);
+
+        List<Booking> bookingList = bookingService.bookingList2(room1.getIdx());
+        model.addAttribute("bookingList", bookingList);
+        System.out.println(bookingList.toString());
         // 검색한 방 객체를 방 상세보기 페이지에서 사용하기 위해 model 에 바인딩
         model.addAttribute("room", room1);
         // 검색한 방 사진 리스트를 방 상세보기 페이지에서 사용하기 위해 model 에 바인딩

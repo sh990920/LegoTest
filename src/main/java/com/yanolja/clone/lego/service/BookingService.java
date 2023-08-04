@@ -80,4 +80,9 @@ public class BookingService {
         return bookingList;
     }
 
+    public List<Booking> bookingList2(Long roomIdx){
+        List<Booking> bookingList = bookingRepository.findByRoomIdx(roomIdx);
+        return bookingList;
+    }
+
 }
