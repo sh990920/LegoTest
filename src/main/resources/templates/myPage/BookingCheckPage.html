@@ -10,18 +10,6 @@
     <!-- footer css -->
     <link href="/css/footer.css" rel="stylesheet">
     <script src="/js/nullPage.js"></script>
-    <script th:inline="javascript">
-        // 컨트롤러에서 모델로 바인딩한 에러 체크값
-        let error = [[${error}]];
-        // 컨트롤러에서 모델로 바인딩한 에러 메세지
-        let errorMessage = [[${errorMessage}]];
-
-        // 에러 체크값이 true일 경우 에러 알림창 등장
-        if ( error == "true" ) {
-            alert(errorMessage);
-            location.href = "/myPage/";
-        }
-    </script>
 </head>
 <body>
     <header style="background-color: #E24671;">
@@ -110,93 +98,38 @@
             </div>
             <div class="col-9" style="height: 100%;">
                 <div class="row align-items-center" style="width: 100%; height: 10%; font-size: 25px;">
-                    내 정보 수정
+                    예약 내역
                 </div>
-                <div class="row align-items-center" style="width: 100%; height: 10%; font-size: 20px;">
-                    프로필 이미지
-                </div>
-                <form method="post" enctype="multipart/form-data" action="/myPage/profileImageUpdate/">
-                    <div class="row align-items-center" style="width: 100%; height: 30%;">
-                        <div class="col-4" style="height: 100%;">
-                            <input id="profileImage" name="profileImage" type="hidden" th:value="${member.profileImage}">
-                            <th:block th:if="${member.profileImage != ''}">
-                                <img class="profileImgEdit" style="width: 100%; height: 100%;" th:src="@{/profileImage/} + ${member.profileImage}">
-                            </th:block>
-                            <th:block th:if="${member.profileImage == ''}">
-                                <div class="row align-items-center" style="height: 100%; width: 100%; text-align: center;">
-                                    프로필 이미지가 없습니다.
-                                </div>
-                            </th:block>
-                        </div>
-                        <div class="col-4" style="height: 100%;">
-                            <div class="row align-items-center" style="width: 100%; height: 50%;">
-                                <input type="submit" value="이미지 변경">
-                            </div>
-                            <div style="width: 100%; height: 50%;">
-                                <div class="row align-items-center" style="width: 100%; height: 50%;">
-                                    <input type="file" value="등록하기" id="imageFile"  name="imageFile" onchange="previewImage();">
-                                </div>
-                                <div class="row align-items-center" style="width: 100%; height: 50%;">
-                                    <div id="changeImageText" style="text-align: center; visibility: hidden;">
-                                        바뀔 이미지 ->
-                                    </div>
-                                </div>
+                <div class="row overflow-scroll" style="width: 100%; height: 90%;">
+                    <!-- for 문 반복 하면 됨 -->
+                    <th:block th:each="booking, i : ${bookingList}">
+                        <div class="card" style="width: 100%; height: 35%;">
+                            <h5 class="card-header" th:text="${businessList[__${i.index}__].placeName}">예약한 숙소 이름</h5>
+                            <div class="card-body">
+                                <h5 class="card-title" th:text="'체크인 날짜 : ' + ${booking.checkInDate} + ' | 체크아웃 날짜 : ' + ${booking.checkOutDate}">체크인 날짜 : 2022-01-01 | 체크아웃 날짜 : 2022-01-02</h5>
+                                <th:block th:if="${booking.isPaid} == 0">
+                                    <p class="card-text">결제완료</p>
+                                </th:block>
+                                <th:block th:if="${booking.isPaid} == 1">
+                                    <p class="card-text">이용중</p>
+                                </th:block>
+                                <th:block th:if="${booking.isPaid} == 2">
+                                    <p class="card-text">이용완료</p>
+                                </th:block>
+                                <th:block th:if="${booking.isPaid} == 3">
+                                    <p class="card-text">환불처리</p>
+                                </th:block>
+                                <p class="card-text" th:text="'가격 : ' + ${booking.price} + '원'">가격 : 120000원</p>
+                                <input type="button" class="btn btn-primary" value="다시 예약하기" onclick="nullPage()">
                             </div>
                         </div>
-                        <div class="col-4" style="height: 100%;">
-                            <img id="previewProfileImage" style="width: 100%; height: 100%; visibility: hidden;" src="">
-                        </div>
-                    </div>
-                </form>
-                <div class="row align-items-end" style="width: 100%; height: 10%; font-size: 20px;">
-                    닉네임
-                </div>
-                <div class="row align-items-center" style="width: 100%; height: 10%; font-size: 18px;">
-                    <div class="col-3" th:text="${member.nickname}">
-                        실제 닉네임
-                    </div>
-                    <div class="col-3" id="nicknameChangeForm">
-                        <input type="button" value="닉네임 수정" onclick="changeNicknameForm()">
-                    </div>
-                    <div class="col-3" id="nicknameChangeFormClose" style="display: none;">
-                        <input type="button" value="수정 취소" onclick="changeNicknameFormClose()">
-                    </div>
-                    <div class="col-3" id="nicknameForm" style="display: none;">
-                        <input id="nickname" type="text">
-                    </div>
-                    <div class="col-3" id="nicknameCheck" style="display: none;">
-                        <input type="button" value="닉네임 중복검사" onclick="checkNickname()">
-                    </div>
-                    <div class="col-3" id="nicknameChange" style="display: none;">
-                        <input type="button" value="닉네임 수정하기">
-                    </div>
-                </div>
-                <div class="row" style="width: 100%; height: 30%;">
-                    <div class="col-6" style="height: 100%;">
-                        <div class="row align-items-center" style="width: 100%; height: 40%; font-size: 20px;">
-                            이름
-                        </div>
-                        <div th:text="${member.name}" class="row align-items-center" style="width: 100%; height: 30%; font-size: 20px;">
-                            실제 이름
-                        </div>
-                        <div class="row align-items-center" style="width: 100%; height: 30%;">
-                            <input type="button" value="이름 수정">
-                        </div>
-                    </div>
-                    <div class="col-6" style="height: 100%;">
-                        <div class="row align-items-center" style="width: 100%; height: 40%; font-size: 20px;">
-                            전화번호
-                        </div>
-                        <div th:text="${member.phone}" class="row align-items-center" style="width: 100%; height: 30%; font-size: 20px;">
-                            실제 전화번호
-                        </div>
-                        <div class="row align-items-center" style="width: 100%; height: 30%;">
-                            <input type="button" value="전화번호 수정">
-                        </div>
-                    </div>
+                    </th:block>
                 </div>
             </div>
         </div>
+    </div>
+    <div style="width: 100%; height: 100px;">
+
     </div>
     <footer class="footer">
         <div class="footer__addr">
@@ -283,64 +216,17 @@
             </div>
         </div>
     </footer>
+<!--     
+    <div th:each="" style="border:1px solid black;">
+        <div th:text="${booking.price}">
+
+        </div>
+        <div th:text="${booking.checkInDate}">
+
+        </div>
+        <div th:text="${booking.checkOutDate}">
+
+        </div>
+    </div> -->
 </body>
-<script>
-
-    function changeNicknameForm(){
-        let nicknameChangeForm = document.getElementById("nicknameChangeForm");
-        let nicknameChangeFormClose = document.getElementById("nicknameChangeFormClose");
-        let nicknameForm = document.getElementById("nicknameForm");
-        let nickname = document.getElementById("nickname");
-        let nicknameCheck = document.getElementById("nicknameCheck");
-        nicknameChangeForm.style.display = "none";
-        nicknameChangeFormClose.style.display = "block";
-        nicknameForm.style.display = "block";
-        nickname.value = "";
-        nickname.readOnly = false;
-        nicknameCheck.style.display = "block";
-    }
-
-    function changeNicknameFormClose(){
-        let nicknameChangeForm = document.getElementById("nicknameChangeForm");
-        let nicknameChangeFormClose = document.getElementById("nicknameChangeFormClose");
-        let nicknameForm = document.getElementById("nicknameForm");
-        let nickname = document.getElementById("nickname");
-        let nicknameCheck = document.getElementById("nicknameCheck");
-        let nicknameChange = document.getElementById("nicknameChange");
-        nicknameChangeForm.style.display = "block";
-        nicknameChangeFormClose.style.display = "none";
-        nicknameForm.style.display = "none";
-        nickname.value = "";
-        nickname.readOnly = false;
-        nicknameCheck.style.display = "none";
-        nicknameChange.style.display = "none";
-    }
-
-    function checkNickname(){
-        let nickname = document.getElementById("nickname");
-        let nicknameCheck = document.getElementById("nicknameCheck");
-        let nicknameChange = document.getElementById("nicknameChange");
-        nickname.readOnly = true;
-        nicknameCheck.style.display = "none";
-        nicknameChange.style.display = "block";
-    }
-</script>
-<script>
-    function previewImage() {
-        const previewProfileImage = document.getElementById("previewProfileImage");
-        const changeImageText = document.getElementById("changeImageText");
-        const file = document.getElementById("imageFile").files[0];
-        const reader = new FileReader();
-
-        reader.addEventListener("load", function () {
-            changeImageText.style.visibility = "visible";
-            previewProfileImage.style.visibility = "visible";
-            previewProfileImage.src = reader.result;
-        }, false);
-
-        if (file) {
-            reader.readAsDataURL(file);
-        }
-    }
-</script>
 </html>
