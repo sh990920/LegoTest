@@ -91,12 +91,15 @@ public class BusinessSecurityConfig extends WebSecurityConfigurerAdapter {
                     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
                         // 오류 확인하기
                         System.out.println("exception : " + exception.getMessage());
+                        System.out.println(exception.toString());
                         // 에러 메세지 변수 생성
                         String errorMessage = null;
                         // 에러 결과에 따라 에러 메세지 지정
                         if(exception instanceof BadCredentialsException){
                             errorMessage = "아이디 또는 비밀번호가 잘못 입력 되었습니다.";
-                        }else{
+                        }else if(exception.getMessage().equalsIgnoreCase("가입승인 대기중인 사용자 입니다.")){
+                            errorMessage = exception.getMessage();
+                        }else {
                             errorMessage = "알 수 없는 이유로 로그인에 실패하였습니다.";
                         }
                         // 에러 메세지를 포함해서 다시 loginPage 로 이동

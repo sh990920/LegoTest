@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
@@ -83,10 +84,18 @@ public class AdminController {
         if(business != null){
             return "redirect:/business/";
         }
+        List<Business> businessList = businessSignUpService.authenticationCheck();
+        model.addAttribute("businessList", businessList);
         // 로그인한 유저의 id 값을 model 에 담아 바인딩
         model.addAttribute("id", principal.getName());
         // admin 폴더 안의 mainPage.html 로 이동
         return "admin/mainPage";
+    }
+
+    @PostMapping("/businessAuthentication/")
+    public String businessAuthentication(Business business){
+        businessSignUpService.authenticationCheck(business);
+        return "redirect:/admin/";
     }
 
     // 관리자 아이디 중복 검사

@@ -22,12 +22,20 @@
         function requestPayment() {
             let buyerName = document.getElementById("visitorName").value;
             let buyerTel = document.getElementById("visitorPhone").value;
+            let checkValue1 = document.getElementById("checkValue1");
+            let checkValue2 = document.getElementById("checkValue2");
+            let checkValue3 = document.getElementById("checkValue3");
             if(buyerName == ""){
                 alert("이용자 이름을 작성해주세요.");
                 return;
             }
             if(buyerTel == ""){
                 alert("이용자 전화번호를 작성해주세요.");
+                return;
+            }
+            // 필수항목 체크박스 확인
+            if(checkValue1.checked != true || checkValue2.checked != true || checkValue3.checked != true){
+                alert("필수항목에 체크를 해주세요");
                 return;
             }
             let pg = document.querySelector('input[name="pg"]:checked').value;
@@ -361,7 +369,7 @@
         <div class="row align-items-center" style="width: 100%; height: 15%;">
             <div class="col-12" style="font-size: 20px; font-weight: bold;">
                 <span>
-                    <input type="checkbox">
+                    <input type="checkbox" id="allCheck" onclick="checkAll()">
                 </span>
                 <span>필수 약관 전체 동의</span>
             </div>
@@ -369,7 +377,7 @@
         <div class="row align-items-center" style="width: 100%; height: 12%;">
             <div class="col-12" style="font-size: 17px; font-weight: bold;">
                 <span>
-                    <input type="checkbox">
+                    <input type="checkbox" id="checkValue1">
                 </span>
                 <span>[필수] 만14세 이상 이용 동의</span>
             </div>
@@ -377,7 +385,7 @@
         <div class="row align-items-center" style="width: 100%; height: 12%;">
             <div class="col-12" style="font-size: 17px; font-weight: bold;">
                 <span>
-                    <input type="checkbox">
+                    <input type="checkbox" id="checkValue2">
                 </span>
                 <span>[필수] 개인정보 수집 및 이용</span>
             </div>
@@ -385,7 +393,7 @@
         <div class="row align-items-center" style="width: 100%; height: 12%;">
             <div class="col-12" style="font-size: 17px; font-weight: bold;">
                 <span>
-                    <input type="checkbox">
+                    <input type="checkbox" id="checkValue3">
                 </span>
                 <span>[필수] 개인정보 제 3자 제공</span>
             </div>
@@ -393,7 +401,7 @@
         <div class="row align-items-center" style="width: 100%; height: 12%;">
             <div class="col-12" style="font-size: 17px; font-weight: bold;">
                 <span>
-                    <input type="checkbox">
+                    <input type="checkbox" id="checkValue4">
                 </span>
                 <span>[선택] 이벤트, 혜택 정보 수신 동의</span>
             </div>
@@ -401,7 +409,7 @@
         <div class="row align-items-center" style="width: 100%; height: 12%;">
             <div class="col-12" style="font-size: 17px; font-weight: bold;">
                 <span>
-                    <input type="checkbox">
+                    <input type="checkbox" id="checkValue5">
                 </span>
                 <span>[선택] 이벤트, 혜택 정보 전송을 위한 개인정보 수집 및 이용 동의</span>
             </div>
@@ -415,6 +423,29 @@
     </div>
 </body>
 <script>
+    function checkAll(){
+        let allCheck = document.getElementById("allCheck");
+        let checkValue1 = document.getElementById("checkValue1");
+        let checkValue2 = document.getElementById("checkValue2");
+        let checkValue3 = document.getElementById("checkValue3");
+        let checkValue4 = document.getElementById("checkValue4");
+        let checkValue5 = document.getElementById("checkValue5");
+        if(allCheck.checked == true){
+            checkValue1.checked = true;
+            checkValue2.checked = true;
+            checkValue3.checked = true;
+            checkValue4.checked = true;
+            checkValue5.checked = true;
+        }
+        if(allCheck.checked == false){
+            checkValue1.checked = false;
+            checkValue2.checked = false;
+            checkValue3.checked = false;
+            checkValue4.checked = false;
+            checkValue5.checked = false;
+        }
+    }
+
     function memberSameVisitor(){
         let check = document.getElementById("check");
         let memberName = document.getElementById("memberName");

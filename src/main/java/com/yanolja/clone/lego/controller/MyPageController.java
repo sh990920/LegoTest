@@ -1,6 +1,9 @@
 package com.yanolja.clone.lego.controller;
 
+import com.yanolja.clone.lego.entity.Booking;
+import com.yanolja.clone.lego.entity.Business;
 import com.yanolja.clone.lego.entity.Member;
+import com.yanolja.clone.lego.service.BookingService;
 import com.yanolja.clone.lego.service.MyPageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,12 +16,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 @RequestMapping("/myPage")
 public class MyPageController {
     @Autowired
     MyPageService myPageService;
+
     // 마이페이지 메인
     @GetMapping("/")
     public String myPage(@RequestParam(value = "error", required = false) String error, @RequestParam(value = "errorMessage", required = false) String errorMessage, Principal principal, Model model){
@@ -44,6 +49,17 @@ public class MyPageController {
         }else{
             return "redirect:/myPage/";
         }
+    }
+
+    @GetMapping("/bookingCheck/")
+    public String bookingCheckPage(Principal principal, Model model){
+        Member member = myPageService.findMember(principal.getName());
+        List<Booking> bookingList = myPageService.bookingCheckList(member.getIdx());
+        List<Business> businessList = myPageService.businessCheckList(member.getIdx());
+        model.addAttribute("businessList", businessList);
+        model.addAttribute("member", member);
+        model.addAttribute("bookingList", bookingList);
+        return "myPage/BookingCheckPage";
     }
 
 

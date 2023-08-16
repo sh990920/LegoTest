@@ -612,6 +612,7 @@
         let days = Math.abs(diffDate / (1000 * 60 * 60 * 24)) + 1;
         // 날짜 체크를 위해서 변수 생성
         let checkDate = null;
+        
         // 예약 리스트 forEach 로 사용
         /*[# th:each="booking : ${bookingList}"]*/
         // 체크인 날짜를 booking 객체의 변수에 저장
@@ -623,6 +624,7 @@
         bookingCheckOutDate = new Date(booking.checkOutDate);
         // 버튼 변수에 버튼 이름 저장하기
         btn = "btn" + /*[[${booking.roomIdx}]]*/;
+        
         // 기간 만큼 비교하기
         for(let i = 0; i < days; i++){
             // 만약 맨 처음 for 문을 실행중이라면 checkInDate 에서 날짜를 얻어온 이후 i(날짜)를 추가

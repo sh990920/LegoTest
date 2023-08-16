@@ -1,6 +1,10 @@
 package com.yanolja.clone.lego.service;
 
+import com.yanolja.clone.lego.entity.Booking;
+import com.yanolja.clone.lego.entity.Business;
 import com.yanolja.clone.lego.entity.Member;
+import com.yanolja.clone.lego.repository.BookingRepository;
+import com.yanolja.clone.lego.repository.BusinessRepository;
 import com.yanolja.clone.lego.repository.MemberRepository;
 import com.yanolja.clone.lego.util.Path;
 import com.yanolja.clone.lego.util.Type;
@@ -10,12 +14,20 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class MyPageService {
     // MemberRepository 를 사용하기 위해 어노테이션으로 연결
     @Autowired
     MemberRepository memberRepository;
+
+    @Autowired
+    BookingRepository bookingRepository;
+
+    @Autowired
+    BusinessRepository businessRepository;
 
     // member 유저 검색
     public Member findMember(String id){
@@ -81,4 +93,20 @@ public class MyPageService {
             return "yes";
         }
     }
+
+    public List<Booking> bookingCheckList(Long memberIdx){
+        List<Booking> bookingList = bookingRepository.findByMemberIdx(memberIdx);
+        return bookingList;
+    }
+
+    public List<Business> businessCheckList(Long memberIdx){
+        List<Booking> bookingList = bookingCheckList(memberIdx);
+        List<Business> businessList = new ArrayList<>();
+        for(int i = 0; i < bookingList.size(); i++){
+            Business business = businessRepository.findByIdx(bookingList.get(i).getBusinessIdx());
+            businessList.add(business);
+        }
+        return businessList;
+    }
+
 }

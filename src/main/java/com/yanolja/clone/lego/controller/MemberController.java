@@ -192,17 +192,27 @@ public class MemberController {
         JsonNode paymentNode = payment.get("payment");
         // json 형태의 정보가 복잡해 트랜잭션 의 값을 json 형태로 생성
         JsonNode transactionsNode = paymentNode.get("transactions");
-        // 첫 번째 트랜잭션 정보 가져오기
-        JsonNode firstTransaction = transactionsNode.get(0);
+        // 결제가 완료된 트랜잭션을 가져오기 위해 미리 객체 생성
+        JsonNode successTransaction = null;
+        // 결제가 완료된 트랜잭션 정보 가져오기
+        int count = 0;
+        while (true){
+            JsonNode transaction = transactionsNode.get(count);
+            if(transaction.get("is_primary").asText().equalsIgnoreCase("true")){
+                successTransaction = transactionsNode.get(count);
+                break;
+            }
+            count++;
+        }
         // paid 값 가져오기
-        String paid = firstTransaction.get("amount").get("paid").asText();
+        String paid = successTransaction.get("amount").get("paid").asText();
         // status 값 가져오기
-        String status = firstTransaction.get("status").asText();
+        String status = successTransaction.get("status").asText();
         // payment_id 값 가져오기
         String payment_id = paymentNode.get("id").asText();
         // 카카오페이 결제 시 카카오페이에서 카드를 사용했다면 카드 사용으로 변경
         if(booking.getPgProvider().equals("CACAO_PAY")){
-            JsonNode payment_method_detail = firstTransaction.get("payment_method_detail").get("easy_pay");
+            JsonNode payment_method_detail = successTransaction.get("payment_method_detail").get("easy_pay");
             JsonNode card = payment_method_detail.get("card");
             if(card != null){
                 booking.setPayMethod(booking.getPayMethod() + "_CARD");
@@ -211,11 +221,11 @@ public class MemberController {
         // 리턴값의 기본값을 'no' 로 설정
         String res = "no";
         // 포트원 서버에서 가져온 paymentId 와 결제 할 때 등록한 paymentId 가 같은지 비교
-        if(payment_id.equals(booking.getPaymentId())){
+        if(payment_id.equals(booking.getPaymentId())) {
             // 포트원 서버에서 가져온 status 의 결과가 "PAID" 와 같은지 비교
-            if(status.equalsIgnoreCase("PAID")){
+            if (status.equalsIgnoreCase("PAID")) {
                 // 포트원 서버에서 가져온 paid 가 비어있는지 확인
-                if(paid != null){
+                if (paid != null) {
                     // 모든 조건에 일치하면 결제 정보 저장
                     res = bookingService.Pay(booking);
                 }

@@ -3,15 +3,19 @@ package com.yanolja.clone.lego.service;
 import com.yanolja.clone.lego.entity.Admin;
 import com.yanolja.clone.lego.entity.Business;
 import com.yanolja.clone.lego.entity.Member;
+import com.yanolja.clone.lego.exceptions.UserNoAuthenticationException;
 import com.yanolja.clone.lego.repository.BusinessRepository;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -29,13 +33,31 @@ public class BusinessSignUpService implements UserDetailsService {
         if(business == null) {
             throw new UsernameNotFoundException(username);
         }
+        if(business.getAuthentication() == 1){
+            // 오류가 나는데 잘 모르겠음 나중에 수정 예정
+            throw new UserNoAuthenticationException("가입승인 대기중인 사용자 입니다.");
+        }
         // User 클래스로 business 의 id 와 비밀번호, 권한을 가진 객체로 빌드
         return User.builder()
                 .username(business.getId())
                 .password(business.getPassword())
                 .roles(business.getRollName())
                 .build();
+    }
 
+    public Business authenticationCheck(String id){
+        Business business = businessRepository.findById(id);
+        return business;
+    }
+
+    public List<Business> authenticationCheck(){
+        List<Business> businessList = businessRepository.findByAuthentication(1);
+        return businessList;
+    }
+
+    public void authenticationCheck(Business business){
+        business.setAuthentication(2);
+        businessRepository.updateAuthentication(business.getAuthentication(), business.getIdx());
     }
 
     // business 유저 회원가입
@@ -43,7 +65,7 @@ public class BusinessSignUpService implements UserDetailsService {
         // business 객체의 비밀번호 암호화
         business.setPassword(passwordEncoder.encode(business.getPassword()));
         // business 객체의 회원승인을 2로 설정(나중에 관리자가 승인하도록 코드 수정 예정)
-        business.setAuthentication(2);
+        business.setAuthentication(1);
         // business 객체의 권한 설정
         business.setRollName("BUSINESS");
         // business 객체를 데이터베이스에 저장

@@ -47,6 +47,7 @@ public class BusinessController {
         // businessSignUpService 의 loadUsrByUsername 메소드로 실제 'BUSINESS' 권한을 가진 유저인지 확인하기 위해 사용
         businessSignUpService.loadUserByUsername(id);
         // 로그인 성공 시 이후 작동은 BusinessSecurityConfig 에서 설정을 해두었기 때문에 따로 작성을 하지 않음
+
     }
 
     // 로그인 완료
