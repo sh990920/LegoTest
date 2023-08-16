@@ -34,6 +34,7 @@ public class MemberController {
     @Autowired
     RoomService roomService;
 
+    // BookingService 를 사용하기 위해 AutoWired 로 연결
     @Autowired
     BookingService bookingService;
 
@@ -113,8 +114,9 @@ public class MemberController {
         List<BusinessImage> businessImageList = businessService.findBusinessImageList(business.getIdx());
         // 업체의 방에 관련된 사진 리스트를 생성
         List<List> roomImageList = roomService.findDetailRoomImageList(business.getIdx());
-
+        // 예약 리스트 가져오기
         List<Booking> bookingList = bookingService.bookingList(business1.getIdx());
+        // 예약 리스트를 상세 페이지에서 사용하기 위해 model 바인딩
         model.addAttribute("bookingList", bookingList);
         // 방 이미지 리스트를 상세 페이지에서 사용하기 위해 model 바인딩
         model.addAttribute("roomImageList", roomImageList);
@@ -139,20 +141,19 @@ public class MemberController {
         Room room1 = roomService.findRoom(room.getIdx());
         // 방에 관련된 사진 리스트를 검색
         List<RoomImage> roomImageList = roomService.findRoomImageList(room.getIdx());
-
-
-        model.addAttribute("checkInDate", checkInDate);
-        model.addAttribute("checkOutDate", checkOutDate);
-
+        // 방예약 리스트 가져오기
         List<Booking> bookingList = bookingService.bookingList2(room1.getIdx());
+        // 예약 리스트를 방 상세보기 페이지에서 사용하기 위해 model 에 바인딩
         model.addAttribute("bookingList", bookingList);
-        System.out.println(bookingList.toString());
         // 검색한 방 객체를 방 상세보기 페이지에서 사용하기 위해 model 에 바인딩
         model.addAttribute("room", room1);
         // 검색한 방 사진 리스트를 방 상세보기 페이지에서 사용하기 위해 model 에 바인딩
         model.addAttribute("roomImageList", roomImageList);
         // 검색한 사용자 객체를 방 상세보기 페이지에서 사용하기 위해 model 에 바인딩
         model.addAttribute("member", member);
+        // 체크인 날짜와 체크아웃 날짜를 방 상세보기 페이지에서 사용하기 위해 model 에 바인딩
+        model.addAttribute("checkInDate", checkInDate);
+        model.addAttribute("checkOutDate", checkOutDate);
         // 방 상세보기 페이지로 이동
         return "member/roomDetailPage";
     }

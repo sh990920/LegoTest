@@ -21,6 +21,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/myPage")
 public class MyPageController {
+    // MyPageService 를 사용하기 위해 AutoWired 로 연결
     @Autowired
     MyPageService myPageService;
 
@@ -51,14 +52,22 @@ public class MyPageController {
         }
     }
 
+    // 예약 목록 보여주기
     @GetMapping("/bookingCheck/")
     public String bookingCheckPage(Principal principal, Model model){
+        // 현재 접속한 사용자 객체 받아오기
         Member member = myPageService.findMember(principal.getName());
+        // 사용자에 관련된 예약 리스트 가져오기
         List<Booking> bookingList = myPageService.bookingCheckList(member.getIdx());
+        // 사용자가 예약한 예약 리스트를 다시 생성하고 그 예약 리스트에 관련된 사업자 리스트 생성
         List<Business> businessList = myPageService.businessCheckList(member.getIdx());
+        // 생성한 사업자 리스트 model 에 바인딩
         model.addAttribute("businessList", businessList);
+        // 생성한 사용자 객체 model 에 바인딩
         model.addAttribute("member", member);
+        // 생성한 예약 리스트 model 에 바인딩
         model.addAttribute("bookingList", bookingList);
+        // 예약 페이지로 이동
         return "myPage/BookingCheckPage";
     }
 

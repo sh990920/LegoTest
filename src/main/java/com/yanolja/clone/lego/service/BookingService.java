@@ -70,17 +70,23 @@ public class BookingService {
         }
     }
 
+    // 예약 리스트 가져오기
     public List<Booking> bookingList(Long businessIdx, Long roomIdx){
+        // businessIdx 와 roomIdx 로 검색한 리스트를 저장한 이후 반환
         List<Booking> bookingList = bookingRepository.findByBusinessIdxAndRoomIdx(businessIdx, roomIdx);
         return bookingList;
     }
 
+    // 예약 리스트 가져오기
     public List<Booking> bookingList(Long businessIdx){
+        // businessIdx 로 검색한 리스트를 저장한 이후 반환
         List<Booking> bookingList = bookingRepository.findByBusinessIdx(businessIdx);
         return bookingList;
     }
 
+    // 예약 리스트 가져오기
     public List<Booking> bookingList2(Long roomIdx){
+        // roomIdx 로 검색한 리스트를 저장한 이후 반환
         List<Booking> bookingList = bookingRepository.findByRoomIdx(roomIdx);
         return bookingList;
     }

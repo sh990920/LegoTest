@@ -27,7 +27,6 @@ public class BusinessService {
     @Autowired
     BusinessImageRepository businessImageRepository;
 
-
     // business 유저 검색
     public Business findBusiness(String id){
         // 파라미터로 넘어온 id 값으로 business 객체 검색
@@ -141,7 +140,4 @@ public class BusinessService {
             return "noImage";
         }
     }
-
-
-
 }

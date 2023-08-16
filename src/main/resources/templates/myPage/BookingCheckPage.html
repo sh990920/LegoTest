@@ -25,13 +25,13 @@
                             <input type="hidden" value="이게 없으면 모양 유지가 안됨">
                         </ul>
                         <div class="d-flex nav-item me-5 mb-5 mb-lg-0">
-                            <a class="nav-link" href="/beforeSearchPage/">검색</a>
+                            <a class="nav-link" onclick="nullPage()">검색</a>
                         </div>
                         <div sec:authorize="isAuthenticated()" class="d-flex nav-item me-4 mb-4 mb-lg-0">
                             <span class="nav-link" th:text="${member.nickname} + '님 반갑습니다.'"></span>
                         </div>
                         <div class="d-flex nav-item me-4 mb-4 mb-lg-0">
-                            <a class="nav-link active" href="/">예약 내역</a>
+                            <a class="nav-link active" href="/myPage/bookingCheck/">예약 내역</a>
                         </div>
                         <div class="d-flex nav-item me-4 mb-4 mb-lg-0">
                             <a class="nav-link" href="/myPage/">마이 페이지</a>
@@ -42,12 +42,12 @@
                                     더보기
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">공지사항</a></li>
-                                    <li><a class="dropdown-item" href="#">이벤트</a></li>
-                                    <li><a class="dropdown-item" href="#">자주 묻는 질문</a></li>
-                                    <li><a class="dropdown-item" href="#">1:1 문의</a></li>
+                                    <li><a class="dropdown-item" onclick="nullPage()">공지사항</a></li>
+                                    <li><a class="dropdown-item" onclick="nullPage()">이벤트</a></li>
+                                    <li><a class="dropdown-item" onclick="nullPage()">자주 묻는 질문</a></li>
+                                    <li><a class="dropdown-item" onclick="nullPage()">1:1 문의</a></li>
                                     <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" href="#">약관 및 정책</a></li>
+                                    <li><a class="dropdown-item" onclick="nullPage()">약관 및 정책</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -216,17 +216,5 @@
             </div>
         </div>
     </footer>
-<!--     
-    <div th:each="" style="border:1px solid black;">
-        <div th:text="${booking.price}">
-
-        </div>
-        <div th:text="${booking.checkInDate}">
-
-        </div>
-        <div th:text="${booking.checkOutDate}">
-
-        </div>
-    </div> -->
 </body>
 </html>

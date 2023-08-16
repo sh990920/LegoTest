@@ -25,9 +25,11 @@ public class AdminController {
     @Autowired
     AdminSignUpService adminSignUpService;
 
+    // BusinessSignUpService 를 사용하기 위해 AutoWired 로 연결
     @Autowired
     BusinessSignUpService businessSignUpService;
 
+    // SignUpService 를 사용하기 위해 AutoWired 로 연결
     @Autowired
     SignUpService signUpService;
 
@@ -92,9 +94,12 @@ public class AdminController {
         return "admin/mainPage";
     }
 
+    // 사업자가 회원 가입을 했을 때 실제 사용 가능한 사업자로 등록
     @PostMapping("/businessAuthentication/")
     public String businessAuthentication(Business business){
+        // 로그인이 가능하게 내용 변경 후 업데이트
         businessSignUpService.authenticationCheck(business);
+        // 업데이트 이후 메인 페이지로 다시 redirect
         return "redirect:/admin/";
     }
 

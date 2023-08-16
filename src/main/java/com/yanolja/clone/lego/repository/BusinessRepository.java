@@ -18,12 +18,16 @@ public interface BusinessRepository extends JpaRepository<Business, Object> {
     // idx 로 Business 객체 검색
     Business findByIdx(Long idx);
 
+    // placeName 으로 Business 객체 검색
     Business findByPlaceName(String placeName);
 
+    // placeCall 로 Business 객체 검색
     Business findByPlaceCall(String placeCall);
 
+    // authentication 로 Business 객체들을 검색한 이후 결과를 List 로 반환
     List<Business> findByAuthentication(int authentication);
 
+    // idx 로 찾은 Business 객체의 authentication 을 변경한 이후 업데이트
     @Transactional
     @Modifying
     @Query(value = "UPDATE Business SET authentication=:authentication WHERE idx=:idx", nativeQuery = true)

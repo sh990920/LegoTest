@@ -18,6 +18,7 @@ public interface RoomRepository extends JpaRepository<Room, Object> {
     // businessIdx 로 Room 객체들을 검색한 이후 결과를 List 로 반환
     List<Room> findByBusinessIdx(Long businessIdx);
 
+    // businessIdx 로 Room 객체들을 검색한 이후 결과의 갯수를 반환
     int countByBusinessIdx(Long businessIdx);
 
 

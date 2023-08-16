@@ -23,9 +23,11 @@ public class MyPageService {
     @Autowired
     MemberRepository memberRepository;
 
+    // BookingRepository 를 사용하기 위해 어노테이션으로 연결
     @Autowired
     BookingRepository bookingRepository;
 
+    // BusinessRepository 를 사용하기 위해 어노테이션으로 연결
     @Autowired
     BusinessRepository businessRepository;
 
@@ -94,11 +96,13 @@ public class MyPageService {
         }
     }
 
+    // booking 리스트 검색
     public List<Booking> bookingCheckList(Long memberIdx){
         List<Booking> bookingList = bookingRepository.findByMemberIdx(memberIdx);
         return bookingList;
     }
 
+    // booking 리스트에 관련된 business 리스트 생성
     public List<Business> businessCheckList(Long memberIdx){
         List<Booking> bookingList = bookingCheckList(memberIdx);
         List<Business> businessList = new ArrayList<>();

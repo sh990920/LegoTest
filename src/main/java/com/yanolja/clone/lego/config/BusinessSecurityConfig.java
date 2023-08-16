@@ -91,7 +91,6 @@ public class BusinessSecurityConfig extends WebSecurityConfigurerAdapter {
                     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
                         // 오류 확인하기
                         System.out.println("exception : " + exception.getMessage());
-                        System.out.println(exception.toString());
                         // 에러 메세지 변수 생성
                         String errorMessage = null;
                         // 에러 결과에 따라 에러 메세지 지정

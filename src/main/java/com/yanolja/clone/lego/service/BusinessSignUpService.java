@@ -45,16 +45,19 @@ public class BusinessSignUpService implements UserDetailsService {
                 .build();
     }
 
+    // 아이디로 business 객체 가져오기
     public Business authenticationCheck(String id){
         Business business = businessRepository.findById(id);
         return business;
     }
 
+    // authentication 이 1인 유저 리스트 가져오기
     public List<Business> authenticationCheck(){
         List<Business> businessList = businessRepository.findByAuthentication(1);
         return businessList;
     }
 
+    // business 객체의 authentication 을 2로 변경(실제 사용 가능한 유저로 변경)하기
     public void authenticationCheck(Business business){
         business.setAuthentication(2);
         businessRepository.updateAuthentication(business.getAuthentication(), business.getIdx());
@@ -105,15 +108,20 @@ public class BusinessSignUpService implements UserDetailsService {
 
     // business 장소 이름 중복 검사
     public String placeNameCheck(String placeName){
+        // 가져온 장소 이름으로 business 객체 검색
         Business findBusiness = businessRepository.findByPlaceName(placeName);
+        // 결과가 있다면 no 를 리턴, 결과가 없다면 yes 를 리턴
         if(findBusiness != null){
             return "no";
         }
         return "yes";
     }
 
+    // business 전화번호 중복 검사
     public String placeCallCheck(String placeCall){
+        // 가져온 전화번호로 business 객체 검색
         Business findBusiness = businessRepository.findByPlaceCall(placeCall);
+        // 결과가 있다면 no 를 리턴, 결과가 없다면 yes 를 리턴
         if(findBusiness != null){
             return "no";
         }

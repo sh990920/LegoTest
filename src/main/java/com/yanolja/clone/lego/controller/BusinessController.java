@@ -31,9 +31,11 @@ public class BusinessController {
     @Autowired
     RoomService roomService;
 
+    // SignUpService 를 사용하기 위해 AutoWired 로 연결
     @Autowired
     SignUpService signUpService;
 
+    // AdminSignUpService 를 사용하기 위해 AutoWired 로 연결
     @Autowired
     AdminSignUpService adminSignUpService;
 
@@ -77,17 +79,24 @@ public class BusinessController {
     @PostMapping("/signUpPage/certifications/")
     @ResponseBody
     public HashMap<String, String> certifications(String impUid){
+        // PortOne 안에 있는 핸드폰 번호 인증을 위해서 토큰이 저장된 JsonNode 받아오기
         JsonNode jsonToken = IamPortPass.getTokenV1();
+        // 받아온 JsonNode 에서 토큰값 가져오기
         String accessToken = jsonToken.get("response").get("access_token").asText();
+        // 사용자의 정보를 받아오기 위해 위에서 가져온 토큰으로 사용자 정보 받아오기
         JsonNode userInfo = IamPortPass.getUserInfo(impUid, accessToken);
+        // 받아온 JsonNode 에서 사용자 이름 가져오기
         String name = userInfo.get("response").get("name").asText();
+        // 받아온 JsonNode 에서 사용자 전화번호 가져오기
         String placeCall = userInfo.get("response").get("phone").asText();
+        // 이름과 전화번호를 Map 으로 저장 이후 저장한 Map 을 다시 리턴
         HashMap<String, String> map = new HashMap<>();
         map.put("name", name);
         map.put("placeCall", placeCall);
         return map;
     }
 
+    // 회원가입 시 전화번호 중복 비교하기
     @PostMapping("/signUpPage/placeCallCheck")
     @ResponseBody
     public String placeCallCheck(String placeCall){
