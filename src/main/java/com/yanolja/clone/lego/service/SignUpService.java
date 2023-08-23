@@ -77,4 +77,22 @@ public class SignUpService implements UserDetailsService {
         // 값이 없다면 유저가 없는 것이기 때문에 회원가입을 할 수 있도록 'yes' 라는 값을 리턴
         return "yes";
     }
+
+    // 닉네임 중복 비교
+    public String nicknameCheck(String nickname){
+        Member member = memberRepository.findByNickname(nickname);
+        if(member != null){
+            return "no";
+        }
+        return "yes";
+    }
+
+    // 전화번호 중복 비교
+    public String phoneCheck(String phone){
+        Member member = memberRepository.findByPhone(phone);
+        if(member != null){
+            return "no";
+        }
+        return "yes";
+    }
 }

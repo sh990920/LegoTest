@@ -41,6 +41,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-amqp'
 	// @Value 어노테이션
 	implementation'org.springframework.boot:spring-boot-configuration-processor'
+	// 문자 발송 api
+	implementation 'net.nurigo:sdk:4.2.7'
 }
 
 tasks.named('test') {

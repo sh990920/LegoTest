@@ -7,6 +7,7 @@ import com.yanolja.clone.lego.service.BookingService;
 import com.yanolja.clone.lego.service.BusinessService;
 import com.yanolja.clone.lego.service.RoomService;
 import com.yanolja.clone.lego.service.SignUpService;
+import com.yanolja.clone.lego.util.NurigoAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Controller
@@ -41,6 +43,9 @@ public class MemberController {
     // PasswordEncoder 를 사용하기 위해 AutoWired 로 연결
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    // 문자 서비스를 사용하기 위해 객체 생성
+    NurigoAPI nurigoAPI = new NurigoAPI();
 
     //로그인 페이지 이동
     @GetMapping("/loginPage/")
@@ -102,10 +107,49 @@ public class MemberController {
         // 리턴값을 리턴
         return res;
     }
+    // 닉네임 중복 검사
+    @GetMapping("/signUpPage/signUp/nicknameCheck")
+    @ResponseBody
+    public String nicknameCheck(String nickname){
+        String res = "no";
+        res = signUpService.nicknameCheck(nickname);
+        return res;
+    }
+    // 이름, 핸드폰 번호 인증
+    @PostMapping("/signUpPage/signUp/certifications/")
+    @ResponseBody
+    public HashMap<String, String> certifications(String impUid){
+        // PortOne 안에 있는 핸드폰 번호 인증을 위해서 토큰이 저장된 JsonNode 받아오기
+        JsonNode jsonToken = IamPortPass.getTokenV1();
+        // 받아온 JsonNode 에서 토큰값 가져오기
+        String accessToken = jsonToken.get("response").get("access_token").asText();
+        // 사용자의 정보를 받아오기 위해 위에서 가져온 토큰으로 사용자 정보 받아오기
+        JsonNode userInfo = IamPortPass.getUserInfo(impUid, accessToken);
+        // 받아온 JsonNode 에서 사용자 이름 가져오기
+        String name = userInfo.get("response").get("name").asText();
+        // 받아온 JsonNode 에서 사용자 전화번호 가져오기
+        String phone = userInfo.get("response").get("phone").asText();
+        // 이름과 전화번호를 Map 으로 저장 이후 저장한 Map 을 다시 리턴
+        HashMap<String, String> map = new HashMap<>();
+        map.put("name", name);
+        map.put("phone", phone);
+        return map;
+    }
+    // 핸드폰 번호 중복 비교
+    @PostMapping("/signUpPage/signUp/phoneCheck")
+    @ResponseBody
+    public String phoneCheck(String phone){
+        String res = "no";
+        res = signUpService.phoneCheck(phone);
+        return res;
+    }
+
 
     // 업체 상세보기
     @GetMapping("/placePost/")
-    public String placePostPage(Business business, Model model){
+    public String placePostPage(Principal principal ,Business business, Model model){
+        Member member = signUpService.findUser(principal.getName());
+        model.addAttribute("member", member);
         // 어떤 업체로 접근했는지 업체 객체 생성
         Business business1 = businessService.findBusiness(business.getIdx());
         // 업체에 어떤 방들이 있는지 방 리스트 생성
@@ -229,6 +273,10 @@ public class MemberController {
                 if (paid != null) {
                     // 모든 조건에 일치하면 결제 정보 저장
                     res = bookingService.Pay(booking);
+                    Business business = bookingService.getBusiness(booking.getBusinessIdx());
+                    Room room = bookingService.getRoom(booking.getRoomIdx());
+                    // 문자 보내기
+                    nurigoAPI.sendMessage(booking, business, room);
                 }
             }
         }

@@ -4,116 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Title</title>
-    <style>
-        .form {
-        position:absolute;
-        top:50%;
-        left:50%;
-        transform:translate(-50%,-50%);
-        width:300px;
-        height:250px;
-        padding:10px;
-        }
-        .form .form-header {
-        height:30px;
-        display:flex;
-        align-items:center;
-        text-align:center;
-        }
-        .form .form-header > div {
-        width:calc(100% / 3);
-        color: #222;
-        font-size:18px;
-        font-weight:600;
-        cursor:pointer;
-        }
-        .form.member .form-header div.show-member {
-        color:#f1575b;
-        }
-        .form.business .form-header div.show-business {
-        color:#f1575b;
-        }
-        .form.admin .form-header div.show-admin {
-        color:#f1575b;
-        }
-        .form .form-elements {
-        margin-top:15px;
-        }
-        .form .form-elements .form-element {
-        height:50px;
-        opacity:1;
-        overflow:hidden;
-        transition:all 500ms ease-in-out;
-        }
-        .form .form-elements input {
-        width:100%;
-        padding:10px;
-        font-size:16px;
-        margin:2px 0px;
-        border-radius:10px;
-        box-sizing:border-box;
-        border:1px solid #222;
-        background:#f5f5f5;
-        }
-        .form .form-elements button {
-        width:100%;
-        padding:10px;
-        font-size:16px;
-        font-weight:600;
-        margin-top:5px;
-        border-radius:10px;
-        background:#f1575b;
-        color:#f5f5f5;
-        cursor:pointer;
-        border:none;
-        outline:none;
-        }
-        .form .arrow {
-        position:absolute;
-        top:51px;
-        width:0;
-        height:0;
-        margin-top: -3px;
-        border-left:10px solid transparent;
-        border-right:10px solid transparent;
-        border-bottom:10px solid #f1575b;
-        }
-        .form.member .arrow {
-        left:calc(calc(100% / 3) / 2);
-        }
-        .form.business .arrow {
-        left:calc(calc(100% / 3) + calc(calc(100% / 3) / 2.2)) ;
-        }
-        .form.admin .arrow {
-        left:calc(calc(calc(100% / 3) * 2) + calc(calc(100% / 3) / 3)) ;
-        }
-
-        .form.form.member .form-elements > div:nth-child(4),
-        .form.form.member .form-elements > div:nth-child(5),
-        .form.form.member .form-elements > div:nth-child(10),
-        .form.form.member .form-elements > div:nth-child(11) {
-            height: 0px;
-            opacity: 0;
-        }
-
-        .form.business .form-elements > div:nth-child(3),
-        .form.business .form-elements > div:nth-child(5),
-        .form.business .form-elements > div:nth-child(6),
-        .form.business .form-elements > div:nth-child(9),
-        .form.business .form-elements > div:nth-child(11) {
-        height:0px;
-        opacity:0;
-        }
-
-        .form.admin .form-elements > div:nth-child(3),
-        .form.admin .form-elements > div:nth-child(4),
-        .form.admin .form-elements > div:nth-child(6),
-        .form.admin .form-elements > div:nth-child(9),
-        .form.admin .form-elements > div:nth-child(10) {
-        height:0px;
-        opacity:0;
-        }
-    </style>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/67d5da7423.js" crossorigin="anonymous"></script>
     <script th:inline="javascript">
@@ -127,6 +17,7 @@
             alert(errorMessage);
         }
     </script>
+    <link href="/css/memberLogin.css" rel="stylesheet">
 </head>
 <body>
     <div class="container">
@@ -138,7 +29,7 @@
 
             </div>
             <div class="col-6" style="border: 1px solid black;">
-                <div class="row" style="height: 20%; background-color: #f1575b;">
+                <div class="row" style="height: 20%; background-color: #E24671;">
                     <div class="col-2">
 
                     </div>
