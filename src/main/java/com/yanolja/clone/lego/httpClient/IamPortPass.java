@@ -108,29 +108,31 @@ public class IamPortPass {
         return returnJson;
     }
 
-    public static JsonNode getUserInfo(String impUid, String accessToken) { // 19. 파라미터로 컨트롤러에서 넘어온 imp_uid와 accessToken을 받아온다.
+    public static JsonNode getUserInfo(String impUid, String accessToken) {
+        // api 를 사용하기 위해서 PortOne 인터페이스에 저장된 url 정보를 가져운 후 파라미터로 받은 impUid 를 url 뒤에 붙여서 사용
         final String RequestUrl = PortOne.CERTIFICATION_URL + impUid;
-
-        final HttpClient client = HttpClientBuilder.create().build();
-        final HttpGet get = new HttpGet(RequestUrl);
-
-        // 23. 해당 메소드의 반환 값으로 사용할 변수를 미리 만들어둔다.
+        // 외부 서버와 통신할 httpClient 객체 생성
+        HttpClient client = HttpClientBuilder.create().build();
+        // 외부 서버와 통신할 때 사용할 HttpMethod 를 생성
+        HttpGet getRequest = new HttpGet(RequestUrl);
+        // 외부 서버와 통신할 때 사용할 Header 설정
+        getRequest.addHeader("Authorization", "Bearer " + accessToken);
+        // 결과값을 저장할 jsonNode 객체를 미리 생성
         JsonNode returnJson = null;
-
         try {
-            get.addHeader("Authorization", "Bearer " + accessToken);
-            final HttpResponse response = client.execute(get);
+            // 생성된 httpMethod 를 httpClient 에 저장한 후 실행하고 HttpResponse 로 결과값 받아오기
+            final HttpResponse response = client.execute(getRequest);
             ObjectMapper mapper = new ObjectMapper();
+            // json 형식의 반환값을 위에서 만들어둔 jsonNode 객체에 파싱해서 결과값 저장
             returnJson = mapper.readTree(response.getEntity().getContent());
-
-        } catch (UnsupportedEncodingException e) { // 지원되지 않는 인코딩 예외
+        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-        } catch (ClientProtocolException e) { // 클라이언트 프로토콜 예외
+        } catch (ClientProtocolException e) {
             e.printStackTrace();
-        } catch (IOException e) { // I/O 예외
+        } catch (IOException e) {
             e.printStackTrace();
         }
-
+        // 저징힌 결과값 반환
         return returnJson;
     }
 

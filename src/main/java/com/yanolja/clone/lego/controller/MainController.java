@@ -51,7 +51,7 @@ public class MainController {
         if(admin != null){
             return "redirect:/admin/";
         }
-        // 숙소 리스트를 메인 페이지에서 보여주기 위해 리스트 생성(총 5개만 보여줄 예정)
+        // 숙소 리스트를 메인 페이지에서 보여주기 위해 리스트 생성(총 4개만 보여줄 예정)
         List<Business> businessList = businessService.businessList();
 
         List<BusinessImage> businessImageList = businessService.findBusinessImageList();
@@ -69,7 +69,7 @@ public class MainController {
 
     // 로그인을 하지 않은 유저가 이동
     @GetMapping("/n/")
-    public String mainPage(Principal principal){
+    public String noLoginMainPage(Principal principal, Model model){
         // 만약 유저가 로그인을 했다면
         if(principal != null){
             // principal 에서 사용자의 id 를 받아온다.
@@ -97,6 +97,13 @@ public class MainController {
             // member 사용자라면 메인페이지로 이동
             return "redirect:/";
         }
+        // 숙소 리스트를 메인 페이지에서 보여주기 위해 리스트 생성(총 4개만 보여줄 예정)
+        List<Business> businessList = businessService.businessList();
+        List<BusinessImage> businessImageList = businessService.findBusinessImageList();
+
+        model.addAttribute("businessImageList", businessImageList);
+        // 숙소 리스트를 html 에서 사용할 수 있도록 model 에 바인딩
+        model.addAttribute("businessList", businessList);
         // 로그인을 하지 않았다면 메인페이지로 이동
         return "mainPage";
     }

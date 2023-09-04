@@ -8,10 +8,7 @@ import com.yanolja.clone.lego.service.MyPageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -71,5 +68,20 @@ public class MyPageController {
         return "myPage/BookingCheckPage";
     }
 
+    // 유저 닉네임 중복검사
+    @PostMapping("/nicknameCheck/")
+    @ResponseBody
+    public String nicknameCheck(String nickname){
+        String res = "no";
+        res = myPageService.nicknameCheck(nickname);
+        return res;
+    }
+
+    // 유저 닉네임 변경
+    @PostMapping("/nicknameChange/")
+    public String nicknameChange(Member member){
+        myPageService.nicknameChange(member);
+        return "redirect:/myPage/";
+    }
 
 }

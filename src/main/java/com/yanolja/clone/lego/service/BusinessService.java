@@ -1,5 +1,6 @@
 package com.yanolja.clone.lego.service;
 
+import com.yanolja.clone.lego.entity.Booking;
 import com.yanolja.clone.lego.entity.Business;
 import com.yanolja.clone.lego.entity.BusinessImage;
 import com.yanolja.clone.lego.entity.RoomImage;
@@ -15,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -43,12 +45,27 @@ public class BusinessService {
         return business;
     }
 
-    // 숙소 리스트 검색
+    // 숙소 리스트 검색(결제가 가장 많은 순)
     public List<Business> businessList(){
-        // 전체 business 객체들 검색
-        List<Business> businessList = businessRepository.findAll();
+        // business 객체들 중 결제가 많은 순으로 정렬 후 4개만 검색
+        List<Business> businessList = businessRepository.findBusinessListOrderByBookingCount();
         // 검색된 business 객체를 가지고 있는 리스트 반환
         return businessList;
+    }
+
+    public List<Business> findPlaceCategory(String category){
+        List<Business> businessList = businessRepository.findByCategory(category);
+        return businessList;
+    }
+
+    public List<BusinessImage> findPlaceCategoryImage(String category){
+        List<Business> businessList = findPlaceCategory(category);
+        List<BusinessImage> businessImageList = new ArrayList<>();
+        for(int i = 0; i < businessList.size(); i++){
+            BusinessImage businessImage = businessImageRepository.findByBusinessIdxLimitOne(businessList.get(i).getIdx());
+            businessImageList.add(businessImage);
+        }
+        return businessImageList;
     }
 
     // 사진 추가

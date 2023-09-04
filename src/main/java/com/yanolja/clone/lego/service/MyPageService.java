@@ -113,4 +113,18 @@ public class MyPageService {
         return businessList;
     }
 
+    // 닉네임 중복 검사
+    public String nicknameCheck(String nickname){
+        Member member = memberRepository.findByNickname(nickname);
+        if(member != null){
+            return "no";
+        }else{
+            return "yes";
+        }
+    }
+
+    // 닉네임 변경
+    public void nicknameChange(Member member){
+        memberRepository.updateNickname(member.getNickname(), member.getIdx());
+    }
 }

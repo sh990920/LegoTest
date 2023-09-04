@@ -43,15 +43,6 @@ public class AdminSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception{
         // '/admin/' 으로 들어오는 모든 url 에 권한이 'ADMIN' 인 사용자만 들어올 수 있게 하기위해 작성
-//        http.csrf()
-//                .disable()
-//                .requestMatchers()
-//                .antMatchers("/admin/**")
-//                .and()
-//                .authorizeRequests() // 보안 검사기능 시작
-//                .antMatchers("/admin/").hasRole("ADMIN")
-//                .anyRequest().permitAll();
-
         http.csrf()
                 .disable()
                 .requestMatchers()
@@ -60,9 +51,9 @@ public class AdminSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/", "/n/", "/loginPage/**", "/signUpPage/**", "/business/login/**", "/business/signUpPage/**", "/admin/login/**", "/admin/signUpPage/**").permitAll()
                 // '/myPage/', '/placePost/' 로 들어오는 모든 url 에 권한이 'USER' 인 사용자만 들어올 수 있게 하기위해 작성
-                .antMatchers("/myPage/**", "/placePost/**", "/pay/**").hasRole("USER")
+                .antMatchers("/myPage/**", "/placePost/**", "/pay/**", "/findPlaceCategory/**").hasRole("USER")
                 // '/business/', '/business/roomAddPage/', '/business/roomUpdatePage/" 로 들어오는 모든 url 에 권한이 'BUSINESS' 인 사용지민 들어올 수 있게 하기위해 작성
-                .antMatchers("/business/", "/business/roomAddPage/**", "/business/roomUpdatePage/**").hasRole("BUSINESS")
+                .antMatchers("/business/", "/business/roomAddPage/**", "/business/roomUpdatePage/**", "/business/roomDelete/**", "/business/roomPostPage/**", "/business/imageAdd/**", "/business/imageDelete/**").hasRole("BUSINESS")
                 // '/admin/' 으로 들어오는 모든 url 에 권한이 'ADMIN' 인 사용자만 들어올 수 있게 하기위해 작성
                 .antMatchers("/admin/").hasRole("ADMIN")
                 // 그 이외 모둔 url 은 모든 접속자가 접근 가능

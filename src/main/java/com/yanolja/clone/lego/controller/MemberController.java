@@ -144,6 +144,18 @@ public class MemberController {
         return res;
     }
 
+    @GetMapping("/findPlaceCategory/")
+    public String findPlaceCategory(Principal principal, String category, Model model){
+        Member member = signUpService.findUser(principal.getName());
+        model.addAttribute("member", member);
+        List<Business> businessList = businessService.findPlaceCategory(category);
+        model.addAttribute("businessList", businessList);
+        List<BusinessImage> businessImageList = businessService.findPlaceCategoryImage(category);
+        model.addAttribute("businessImageList", businessImageList);
+        model.addAttribute("category", category);
+        return "member/findPlaceCategoryPage";
+    }
+
 
     // 업체 상세보기
     @GetMapping("/placePost/")

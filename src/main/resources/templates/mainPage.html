@@ -104,46 +104,46 @@
         <div style="width: 100%; height: 100px;">
 
         </div>
-        <div class="mx-auto m-3" style="width: 100%; height: 200px;">
+        <div class="mx-auto m-3" style="width: 100%; height: 150px;">
             <div class="row" style="height: 100%;">
-                <div class="col" style="height: 100%;">
-                    <div class="row align-items-center" style="height: 70%; text-align: center;">
-                        <i class="fa-solid fa-vihara fa-2xl" style="color: black;"></i>
+                <div class="col" style="height: 100%;" onclick="findPlaceCategory('모텔');">
+                    <div class="row align-items-center" style="height: 60%; text-align: center;">
+                        <img th:src="@{/image/} + 'motel.png'" style="height: 100%; width: 50%;margin-left: 25%;">
                     </div>
-                    <div class="row align-items-center" style="height: 30%;">
-                        <div class="col-12" style="text-align: center;">모텔</div>
-                    </div>
-                </div>
-                <div class="col" style="height: 100%;">
-                    <div class="row align-items-center" style="height: 70%; text-align: center;">
-                        <i class="fa-solid fa-vihara fa-2xl" style="color: black;"></i>
-                    </div>
-                    <div class="row align-items-center" style="height: 30%;">
-                        <div class="col-12" style="text-align: center;">호텔/리조트</div>
+                    <div class="row align-items-center" style="height: 40%;">
+                        <div class="col-12" style="text-align: center; font-size: 18px;">모텔</div>
                     </div>
                 </div>
-                <div class="col" style="height: 100%;">
-                    <div class="row align-items-center" style="height: 70%; text-align: center;">
-                        <i class="fa-solid fa-vihara fa-2xl" style="color: black;"></i>
+                <div class="col" style="height: 100%;" onclick="findPlaceCategory('호텔/리조트');">
+                    <div class="row align-items-center" style="height: 60%; text-align: center;">
+                        <img th:src="@{/image/} + 'hotel.png'" style="height: 100%; width: 50%;margin-left: 25%;">
                     </div>
-                    <div class="row align-items-center" style="height: 30%;">
-                        <div class="col-12" style="text-align: center;">펜션/풀빌라</div>
-                    </div>
-                </div>
-                <div class="col" style="height: 100%;">
-                    <div class="row align-items-center" style="height: 70%; text-align: center;">
-                        <i class="fa-solid fa-vihara fa-2xl" style="color: black;"></i>
-                    </div>
-                    <div class="row align-items-center" style="height: 30%;">
-                        <div class="col-12" style="text-align: center;">캠핑/글램핑</div>
+                    <div class="row align-items-center" style="height: 40%;">
+                        <div class="col-12" style="text-align: center; font-size: 18px;">호텔/리조트</div>
                     </div>
                 </div>
-                <div class="col" style="height: 100%;">
-                    <div class="row align-items-center" style="height: 70%; text-align: center;">
-                        <i class="fa-solid fa-vihara fa-2xl" style="color: black;"></i>
+                <div class="col" style="height: 100%;" onclick="findPlaceCategory('펜션/풀빌라');">
+                    <div class="row align-items-center" style="height: 60%; text-align: center;">
+                        <img th:src="@{/image/} + 'pull.png'" style="height: 100%; width: 50%;margin-left: 25%;">
                     </div>
-                    <div class="row align-items-center" style="height: 30%;">
-                        <div class="col-12" style="text-align: center;">게스트하우스/한옥</div>
+                    <div class="row align-items-center" style="height: 40%;">
+                        <div class="col-12" style="text-align: center; font-size: 18px;">펜션/풀빌라</div>
+                    </div>
+                </div>
+                <div class="col" style="height: 100%;" onclick="findPlaceCategory('캠핑/글램핑');">
+                    <div class="row align-items-center" style="height: 60%; text-align: center;">
+                        <img th:src="@{/image/} + 'camping.png'" style="height: 100%; width: 50%;margin-left: 25%;">
+                    </div>
+                    <div class="row align-items-center" style="height: 40%;">
+                        <div class="col-12" style="text-align: center; font-size: 18px;">캠핑/글램핑</div>
+                    </div>
+                </div>
+                <div class="col" style="height: 100%;" onclick="findPlaceCategory('게스트하우스/한옥');">
+                    <div class="row align-items-center" style="height: 60%; text-align: center;">
+                        <img th:src="@{/image/} + 'guest.png'" style="height: 100%; width: 50%;margin-left: 25%;">
+                    </div>
+                    <div class="row align-items-center" style="height: 40%;">
+                        <div class="col-12" style="text-align: center; font-size: 18px;">게스트하우스/한옥</div>
                     </div>
                 </div>
             </div>
@@ -155,7 +155,7 @@
                         <div class="col-1">
 
                         </div>
-                        <div class="col-11 align-self-center">
+                        <div class="col-11 align-self-center" style="font-size: 20px;">
                             지금 인기 있는 숙소
                         </div>
                     </div>
@@ -163,7 +163,7 @@
                         <div class="col-1">
 
                         </div>
-                        <div class="col-11 align-self-center">
+                        <div class="col-11 align-self-center" style="font-size: 16px;">
                             사람들이 제일 많이 가요!!
                         </div>
                     </div>
@@ -173,7 +173,7 @@
                         <div class="col-10">
 
                         </div>
-                        <div class="col-2 align-self-center">
+                        <div class="col-2 align-self-center" style="font-size: 16px;">
                             <a href="#">더보기</a>
                         </div>
                     </div>
@@ -268,7 +268,7 @@
             
             <address>
                 5534 Somewhere In. The World 22193-10212 - 세상은 하나 위아더 월드<br>
-                <a class="footer__btn" href="mailto:example@gmail.com">Email Us</a>
+                <a class="footer__btn" href="mailto:sh990920@gmail.com">Email Us</a>
             </address>
         </div>
         
@@ -346,4 +346,10 @@
         </div>
     </footer>
 </body>
+<script>
+    function findPlaceCategory(category){
+        let url = "/findPlaceCategory/?category=" + category;
+        location.href = url;
+    }
+</script>
 </html>
