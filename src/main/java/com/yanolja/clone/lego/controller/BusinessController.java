@@ -138,6 +138,10 @@ public class BusinessController {
         Business business = businessService.findBusiness(principal.getName());
         // 사업자의 숙소에 포함된 이미지를 메인 페이지에서 보여주기 위해 리스트 생성
         List<BusinessImage> businessImageList = businessService.findBusinessImageList(business.getIdx());
+        // 업체의 방에 관련된 사진 리스트를 생성
+        List<List> roomImageList = roomService.findDetailRoomImageList(business.getIdx());
+        // 방 이미지 리스트를 상세 페이지에서 사용하기 위해 model 바인딩
+        model.addAttribute("roomImageList", roomImageList);
         // 방 리스트를 html 에서 사용할 수 있도록 model 에 바인딩
         model.addAttribute("roomList", roomList);
         // 로그인한 사용자의 id 를 메인 페이지에서 사용할 수 있도록 model 에 바인딩

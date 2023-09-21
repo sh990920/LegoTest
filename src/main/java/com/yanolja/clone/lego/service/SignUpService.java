@@ -1,5 +1,6 @@
 package com.yanolja.clone.lego.service;
 
+import ch.qos.logback.core.encoder.EchoEncoder;
 import com.yanolja.clone.lego.entity.Member;
 import com.yanolja.clone.lego.repository.MemberRepository;
 import lombok.Builder;
@@ -10,6 +11,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -89,10 +92,18 @@ public class SignUpService implements UserDetailsService {
 
     // 전화번호 중복 비교
     public String phoneCheck(String phone){
-        Member member = memberRepository.findByPhone(phone);
-        if(member != null){
-            return "no";
+        try {
+            Member member = memberRepository.findByPhone(phone);
+            if(member != null){
+                return "no";
+            }
+            return "yes";
+        }catch (Exception e){
+            List<Member> member = memberRepository.findByPhoneMember(phone);
+            if(member != null){
+                return "no";
+            }
+            return "yes";
         }
-        return "yes";
     }
 }

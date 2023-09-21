@@ -49,7 +49,8 @@ public class MemberController {
 
     //로그인 페이지 이동
     @GetMapping("/loginPage/")
-    public String loginPage(@RequestParam(value = "error", required = false) String error, @RequestParam(value = "errorMessage", required = false) String errorMessage, Model model){
+    public String loginPage(@RequestParam(value = "error", required = false) String error,
+            @RequestParam(value = "errorMessage", required = false) String errorMessage, Model model){
         // member 폴더 안의 loginPage.html 로 이동
         model.addAttribute("error", error);
         model.addAttribute("errorMessage", errorMessage);
@@ -121,8 +122,16 @@ public class MemberController {
     public HashMap<String, String> certifications(String impUid){
         // PortOne 안에 있는 핸드폰 번호 인증을 위해서 토큰이 저장된 JsonNode 받아오기
         JsonNode jsonToken = IamPortPass.getTokenV1();
+        //JsonNode testJsonToken = IamPortPass.getTokenAPI();
+        //System.out.println(testJsonToken.toString());
         // 받아온 JsonNode 에서 토큰값 가져오기
         String accessToken = jsonToken.get("response").get("access_token").asText();
+        //String accessTokenTest = testJsonToken.get("token").asText();
+//        if(accessTokenTest.equals(accessToken)){
+//            System.out.println("일치");
+//        }else{
+//            System.out.println("일치하지 않음");
+//        }
         // 사용자의 정보를 받아오기 위해 위에서 가져온 토큰으로 사용자 정보 받아오기
         JsonNode userInfo = IamPortPass.getUserInfo(impUid, accessToken);
         // 받아온 JsonNode 에서 사용자 이름 가져오기
@@ -144,6 +153,7 @@ public class MemberController {
         return res;
     }
 
+    // 카테고리별 숙소 검색
     @GetMapping("/findPlaceCategory/")
     public String findPlaceCategory(Principal principal, String category, Model model){
         Member member = signUpService.findUser(principal.getName());

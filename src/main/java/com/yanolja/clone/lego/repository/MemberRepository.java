@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Object> {
@@ -22,6 +23,10 @@ public interface MemberRepository extends JpaRepository<Member, Object> {
 
     // 핸드폰 번호로 Member 객체 검색
     Member findByPhone(String phone);
+
+    @Modifying
+    @Query(value = "SELECT * FROM Member WHERE phone=:phone", nativeQuery = true)
+    List<Member> findByPhoneMember(@Param("phone") String phone);
 
     // idx 로 찾은 Member 객체의 nickname 을 변경한 이후 업데이트
     @Transactional

@@ -16,6 +16,30 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 public class IamPortPass {
+
+    // restAPI 테스트
+    public static JsonNode getTokenAPI(){
+        final String requestUrl = "http://localhost:8080/getToken/";
+        final String password = "1234";
+        final HttpClient client = HttpClientBuilder.create().build();
+        HttpPost postRequest = new HttpPost(requestUrl);
+        postRequest.setHeader("Content-Type", "application/json");
+        JsonNode returnJson = null;
+        try {
+            JSONObject requestBody = new JSONObject();
+            requestBody.put("password", password);
+            StringEntity entity = new StringEntity(requestBody.toString());
+            postRequest.setEntity(entity);
+            HttpResponse response = client.execute(postRequest);
+            ObjectMapper mapper = new ObjectMapper();
+            returnJson = mapper.readTree(response.getEntity().getContent());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return returnJson;
+    }
+
+    // 토큰 값을 가져오는 메소드(V1)
     public static JsonNode getTokenV1() {
         final String requestUrl = PortOne.AUTHENTICATION_V1_URL;
 
@@ -48,6 +72,8 @@ public class IamPortPass {
         }
         return returnJson;
     }
+
+    // 토큰 값을 가져오는 메소드(V2)
     public static JsonNode getToken() {
         // api 를 사용하기 위해서 PortOne 인터페이스에 저장된 url 정보 가져오기
         final String requestUrl = PortOne.AUTHENTICATION_URL;
@@ -83,6 +109,7 @@ public class IamPortPass {
         return returnJson;
     }
 
+    // 결제 정보를 가져오는 메소드(v2 토큰을 가져오는 메소드와 같이 사용)
     public static JsonNode getResult(String paymentId, String accessToken){
         // api 를 사용하기 위해서 PortOne 인터페이스에 저장된 url 정보를 가져온 후 파라미터로 받은 paymentId 를 url 뒤에 붙여서 사용
         final String requestUrl = PortOne.PAYMENT_DETAILS_URL + paymentId;
@@ -108,6 +135,7 @@ public class IamPortPass {
         return returnJson;
     }
 
+    // 사용자 정보를 가져오는 메소드(v1 토큰을 가져오는 메소드와 같이 사용)
     public static JsonNode getUserInfo(String impUid, String accessToken) {
         // api 를 사용하기 위해서 PortOne 인터페이스에 저장된 url 정보를 가져운 후 파라미터로 받은 impUid 를 url 뒤에 붙여서 사용
         final String RequestUrl = PortOne.CERTIFICATION_URL + impUid;
