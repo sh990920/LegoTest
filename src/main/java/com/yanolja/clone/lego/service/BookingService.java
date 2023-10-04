@@ -91,4 +91,31 @@ public class BookingService {
         return bookingList;
     }
 
+    // 입실, 퇴실, 환불 업데이트
+    public void bookingUpdate(Booking booking){
+        bookingRepository.save(booking);
+    }
+
+    // 입실
+    public void checkIn(Booking booking){
+        Booking updateBooking = bookingRepository.findByIdx(booking.getIdx());
+        updateBooking.setIsPaid(1);
+        bookingUpdate(updateBooking);
+    }
+
+    // 퇴실
+    public void checkOut(Booking booking){
+        Booking updateBooking = bookingRepository.findByIdx(booking.getIdx());
+        updateBooking.setIsPaid(2);
+        bookingUpdate(updateBooking);
+    }
+
+    // 환불
+    public void refund(Booking booking){
+        // 상세하게 입력은 하지 않고 환불 처리만 일단 진행
+        Booking updateBooking = bookingRepository.findByIdx(booking.getIdx());
+        updateBooking.setIsPaid(3);
+        bookingUpdate(updateBooking);
+    }
+
 }

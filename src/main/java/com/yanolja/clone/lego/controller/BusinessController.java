@@ -39,6 +39,9 @@ public class BusinessController {
     @Autowired
     AdminSignUpService adminSignUpService;
 
+    @Autowired
+    BookingService bookingService;
+
     // PasswordEncoder 를 사용하기 위해 AutoWired 로 연결
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -140,6 +143,10 @@ public class BusinessController {
         List<BusinessImage> businessImageList = businessService.findBusinessImageList(business.getIdx());
         // 업체의 방에 관련된 사진 리스트를 생성
         List<List> roomImageList = roomService.findDetailRoomImageList(business.getIdx());
+        // 예약 리스트 생성
+        List<Booking> bookingList = bookingService.bookingList(business.getIdx());
+        // 예약 리스트 model 바인딩
+        model.addAttribute("bookingList", bookingList);
         // 방 이미지 리스트를 상세 페이지에서 사용하기 위해 model 바인딩
         model.addAttribute("roomImageList", roomImageList);
         // 방 리스트를 html 에서 사용할 수 있도록 model 에 바인딩
@@ -329,5 +336,24 @@ public class BusinessController {
         model.addAttribute("roomImageList", roomImageList);
         // 방 상세보기 페이지로 이동
         return "business/roomPost";
+    }
+
+    // 입실
+    @GetMapping("/checkIn/")
+    public String checkIn(Booking booking){
+        bookingService.checkIn(booking);
+        return "redirect:/business/";
+    }
+    // 퇴실
+    @GetMapping("/checkOut/")
+    public String checkOut(Booking booking){
+        bookingService.checkOut(booking);
+        return "redirect:/business/";
+    }
+    // 환불
+    @GetMapping("/refund/")
+    public String refund(Booking booking){
+        bookingService.refund(booking);
+        return "redirect:/business/";
     }
 }

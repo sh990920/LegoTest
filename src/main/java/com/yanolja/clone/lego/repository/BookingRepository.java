@@ -19,4 +19,6 @@ public interface BookingRepository extends JpaRepository<Booking, Object> {
 
     // memberIdx 로 Booking 객체들을 검색한 이후 결과를 List 로 반환
     List<Booking> findByMemberIdx(Long memberIdx);
+
+    Booking findByIdx(Long idx);
 }

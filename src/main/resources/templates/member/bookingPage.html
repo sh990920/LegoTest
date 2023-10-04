@@ -50,8 +50,11 @@
                 payMethod = "EASY_PAY";
             }
             // 토스페이
+            // 안되는 이유를 아직 찾지 못함
             if(value == "channel-key-bcae8eee-454b-4104-afe6-9c356bf3c575"){
                 //payMethod = "EASY_PAY";
+                alert("아직 개발중입니다.");
+                return;
             }
             let request = PortOne.requestPayment({
                 // 가맹점 storeId로 변경해주세요.
@@ -211,7 +214,7 @@
                 <div class="col-6" style="text-align: end;">
                     <span style="font-size: 17px;">
                         <input type="radio" id="visitType" name="visitName" value="bus">
-                        대중교통
+                        도보
                     </span>
                     <span style="font-size: 17px;">
                         <input type="radio" id="visitType" name="visitName" value="car">
