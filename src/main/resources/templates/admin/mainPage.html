@@ -3,28 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <!-- 부트스트랩 api -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js" integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa" crossorigin="anonymous"></script>
 </head>
 <body>
-    <h1>관리자 메인 페이지</h1>
-    <div>
-        <div th:text="${id}"></div>
-    </div>
-    <div sec:authorize="isAuthenticated()">
-        <input type="button" value="로그아웃" onclick="location.href='/logout/'">
-    </div>
+    <div class="container">
+        <div class="row" style="width: 100%; height: 100px;">
 
-    <h2>관리자 회원가입 승인 리스트</h2>
-    <th:block th:each="business : ${businessList}">
-        <div>
-            <form action="/admin/businessAuthentication/" method="POST">
-                <input type="hidden" name="idx" th:value="${business.idx}">
-                <div th:text="${business.placeName}"></div>
-                <div th:text="${business.placeCall}"></div>
-                <div th:text="${business.placeAddress}"></div>
-                <div th:text="${business.category}"></div>
-                <input type="submit" value="회원가입 승인">
-            </form>
         </div>
-    </th:block>
+        <div class="row align-items-center" style="width: 100%; height: 100px; text-align: center;">
+            <h1>관리자 메인 페이지</h1>
+        </div>
+        <div class="row" style="width: 100%; height: 100px;" sec:authorize="isAuthenticated()">
+            <div class="col-8" style="height: 100%;">
+
+            </div>
+            <div class="col-4" style="height: 100%;" >
+                <div class="row" style="margin:0%; padding: 0%; width: 100%; height: 100%;">
+                    <div class="col-8" th:text="${admin.nickname} + '님 환영합니다.'" style="height: 100%; font-size: 20px; text-align: end;">
+
+                    </div>
+                    <div class="col-4" style="height: 100%;">
+                        <input class="btn btn-primary" type="button" value="로그아웃" onclick="location.href='/logout/'">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="width: 100%; height: 100px;">
+
+        </div>
+        <div style="width: 100%; height: 100px;">
+            <div class="row align-items-center" style="width: 100%; height: 100%; text-align: center;">
+                <h1>회원가입 승인 대기 리스트</h1>
+            </div>
+        </div>
+        <div class="container" style="height: 500px; overflow: scroll;">
+            <th:block th:each="business : ${businessList}">
+                <form action="/admin/businessAuthentication/" method="POST" style="height: 100%; width: 100%;">
+                    <div class="row align-items-center" style="width: 100%; height: 50px; text-align: center; border: 1px solid black;">
+                        <input type="hidden" name="idx" th:value="${business.idx}">
+                        <div class="col-2" th:text="${business.placeName}" style="font-size: 20px; border-right: 1px solid black;">
+                            사업자 가게 이름
+                        </div>
+                        <div class="col-3" th:text="${business.placeCall}" style="font-size: 20px; border-right: 1px solid black;">
+                            사업자 가게 전화번호
+                        </div>
+                        <div class="col-3" th:text="${business.placeAddress}" style="font-size: 20px; border-right: 1px solid black;">
+                            사업자 가게 주소
+                        </div>
+                        <div class="col-2" th:text="${business.category}" style="font-size: 20px; border-right: 1px solid black;">
+                            카테고리
+                        </div>
+                        <div class="col-2">
+                            <input class="btn btn-primary" type="submit" value="회원가입 승인">
+                        </div>
+                    </div>
+                    <div class="row" style="width: 100%; height: 5px;">
+
+                    </div>
+                </form>
+            </th:block>
+        </div>
+    </div>
 </body>
 </html>

@@ -88,8 +88,10 @@ public class AdminController {
         }
         List<Business> businessList = businessSignUpService.authenticationCheck();
         model.addAttribute("businessList", businessList);
-        // 로그인한 유저의 id 값을 model 에 담아 바인딩
-        model.addAttribute("id", principal.getName());
+        // 로그인한 admin 정보 가져오기
+        Admin admin = adminSignUpService.findUser(principal.getName());
+        // 로그인한 유저의 정보를 model에 바인딩
+        model.addAttribute("admin", admin);
         // admin 폴더 안의 mainPage.html 로 이동
         return "admin/mainPage";
     }
