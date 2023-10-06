@@ -32,12 +32,12 @@ function roomAdd(){
     }
     let url = "/business/roomAddPage/roomAdd/";
     let param = "roomName=" + roomName +
-                "&businessIdx=" + businessIdx +
-                "&price=" + price +
-                "&minPersonnel=" + minPersonnel +
-                "&maxPersonnel=" + maxPersonnel +
-                "&checkInTime=" + checkInTime +
-                "&checkOutTime=" + checkOutTime;
+        "&businessIdx=" + businessIdx +
+        "&price=" + price +
+        "&minPersonnel=" + minPersonnel +
+        "&maxPersonnel=" + maxPersonnel +
+        "&checkInTime=" + checkInTime +
+        "&checkOutTime=" + checkOutTime;
     sendRequest(url, param, resultRoomAdd, "GET");
 }
 function resultRoomAdd(){

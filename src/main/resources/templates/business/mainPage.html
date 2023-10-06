@@ -263,68 +263,8 @@
     </div>
 </body>
 <script src="/js/httpRequest.js"></script>
-<script>
-    // 방 삭제하기
-    function roomDelete(){
-        let result = confirm("정말로 삭제하시겠습니까?");
-        if(result){
-            let idx = document.getElementById("idx").value;
-            let url = "/business/roomDelete/"
-            let param = "idx=" + idx;
-            sendRequest(url, param, resultDelete, "GET");
-        }else{
-            alert("삭제를 취소했습니다.");
-            return;
-        }
-    }
-    function resultDelete(){
-        if ( xhr.readyState == 4 && xhr.status == 200 ) {
-            let data = xhr.responseText;
-
-            if (data == "no") {
-                alert("방 삭제 실패");
-            } else {
-                alert("방 삭제 성공");
-                location.reload();
-            }
-        }
-    }
-</script>
-<script>
-    // 이미지 미리보기
-    function previewImage() {
-        const previewProfileImage = document.getElementById("previewProfileImage");
-        const file = document.getElementById("imageFile").files[0];
-        const reader = new FileReader();
-
-        reader.addEventListener("load", function () {
-            previewProfileImage.src = reader.result;
-        }, false);
-
-        if (file) {
-            reader.readAsDataURL(file);
-        }
-    }
-</script>
-<script>
-    // 방 상세보기 페이지로 이동
-    function roomPost(idx){
-        let roomIdx = idx;
-        location.href="/business/roomPostPage/?idx=" + idx;
-    }
-</script>
-<script>
-    function checkIn(idx){
-        let bookingIdx = idx;
-        location.href="/business/checkIn/?idx=" + idx;
-    }
-    function checkOut(idx){
-        let bookingIdx = idx;
-        location.href="/business/checkOut/?idx=" + idx;
-    }
-    function refund(idx){
-        let bookingIdx = idx;
-        location.href="/business/refund/?idx=" + idx;
-    }
-</script>
+<script src="/js/businessRoomDelete.js"></script>
+<script src="/js/previewimage.js"></script>
+<script src="/js/businessRoomPost.js"></script>
+<script src="/js/businessChangeStatus.js"></script>
 </html>

@@ -33,13 +33,13 @@ function roomUpdate(){
     }
     let url = "/business/roomUpdatePage/roomUpdate/";
     let param = "idx=" + idx +
-                "&roomName=" + roomName +
-                "&businessIdx=" + businessIdx +
-                "&price=" + price +
-                "&minPersonnel=" + minPersonnel +
-                "&maxPersonnel=" + maxPersonnel +
-                "&checkInTime=" + checkInTime +
-                "&checkOutTime=" + checkOutTime;
+        "&roomName=" + roomName +
+        "&businessIdx=" + businessIdx +
+        "&price=" + price +
+        "&minPersonnel=" + minPersonnel +
+        "&maxPersonnel=" + maxPersonnel +
+        "&checkInTime=" + checkInTime +
+        "&checkOutTime=" + checkOutTime;
     sendRequest(url, param, resultRoomUpdate, "GET");
 }
 function resultRoomUpdate(){

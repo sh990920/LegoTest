@@ -1,9 +1,15 @@
 // 방 삭제하기
 function roomDelete(){
-    let idx = document.getElementById("idx").value;
-    let url = "/business/roomDelete/"
-    let param = "idx=" + idx;
-    sendRequest(url, param, resultDelete, "GET");
+    let result = confirm("정말로 삭제하시겠습니까?");
+    if(result){
+        let idx = document.getElementById("idx").value;
+        let url = "/business/roomDelete/"
+        let param = "idx=" + idx;
+        sendRequest(url, param, resultDelete, "GET");
+    }else{
+        alert("삭제를 취소했습니다.");
+        return;
+    }
 }
 function resultDelete(){
     if ( xhr.readyState == 4 && xhr.status == 200 ) {
